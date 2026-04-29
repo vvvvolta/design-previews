@@ -1,0 +1,307 @@
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #0c0d10;
+  --panel: #15171c;
+  --panel-2: #1c1f26;
+  --border: #262a33;
+  --text: #e6e8ec;
+  --text-dim: #8a8f9a;
+  --text-mute: #5a5f6b;
+  --amber: #f59e0b;
+  --amber-bg: rgba(245, 158, 11, 0.12);
+  --amber-border: rgba(245, 158, 11, 0.3);
+  --blue: #3b82f6;
+  --blue-bg: rgba(59, 130, 246, 0.12);
+  --blue-border: rgba(59, 130, 246, 0.3);
+  --green: #10b981;
+  --red: #ef4444;
+  --accent: #8b5cf6;
+}
+
+html, body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  min-height: 100vh;
+}
+
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+.page {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 32px 24px 80px;
+}
+
+.crumb {
+  font-size: 13px;
+  color: var(--text-dim);
+  margin-bottom: 24px;
+}
+.crumb a { color: var(--text-dim); }
+
+h1 {
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin-bottom: 6px;
+}
+.subtitle {
+  color: var(--text-dim);
+  font-size: 13px;
+  margin-bottom: 32px;
+}
+
+.canvas {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 28px;
+  margin-bottom: 32px;
+}
+.canvas-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-mute);
+  margin-bottom: 18px;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 140px 110px 90px 90px 1fr;
+  gap: 16px;
+  align-items: center;
+  padding: 14px 16px;
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+.row + .row { margin-top: 8px; }
+.row .name { font-weight: 500; }
+.row .metric { font-variant-numeric: tabular-nums; font-size: 16px; font-weight: 500; }
+.row .n { color: var(--text-dim); font-variant-numeric: tabular-nums; }
+.row .baseline { color: var(--text-mute); font-size: 12px; }
+
+.feedback {
+  margin-top: 40px;
+  padding-top: 28px;
+  border-top: 1px solid var(--border);
+}
+.feedback h2 {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+.feedback p.help {
+  color: var(--text-dim);
+  font-size: 13px;
+  margin-bottom: 14px;
+}
+.feedback textarea {
+  width: 100%;
+  min-height: 140px;
+  padding: 14px;
+  background: var(--panel);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 1.5;
+  resize: vertical;
+}
+.feedback textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.foot-nav {
+  margin-top: 24px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+}
+
+/* Index list */
+.index-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+.index-list a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 18px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--text);
+}
+.index-list a:hover {
+  border-color: var(--accent);
+  text-decoration: none;
+}
+.index-list .num {
+  color: var(--text-mute);
+  font-variant-numeric: tabular-nums;
+  font-size: 13px;
+  margin-right: 12px;
+}
+.index-list .label { flex: 1; }
+.index-list .arrow { color: var(--text-mute); }
+
+/* === Per-design warning treatments === */
+
+/* 01: Misplaced baseline (warning glued to baseline cell) */
+.w-01 {
+  font-size: 11px;
+  color: var(--amber);
+}
+
+/* 02: Soft fill, no border */
+.w-02 {
+  margin-top: 16px;
+  background: var(--amber-bg);
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 13px;
+  color: var(--amber);
+}
+
+/* 03: Compact pill next to metric */
+.pill-03 {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 2px 8px;
+  background: var(--amber-bg);
+  color: var(--amber);
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 500;
+  vertical-align: middle;
+}
+
+/* 04: Two-line, title + body */
+.w-04 {
+  margin-top: 16px;
+  background: var(--amber-bg);
+  border: 1px solid var(--amber-border);
+  border-radius: 10px;
+  padding: 14px 16px;
+}
+.w-04 .t { font-weight: 600; color: var(--amber); margin-bottom: 4px; }
+.w-04 .b { color: var(--text-dim); font-size: 13px; }
+
+/* 05: Sample size is small (single bold banner) */
+.w-05 {
+  margin-top: 16px;
+  background: var(--amber-bg);
+  border-left: 3px solid var(--amber);
+  padding: 12px 16px;
+  font-size: 13px;
+  color: var(--text);
+}
+.w-05 strong { color: var(--amber); margin-right: 6px; }
+
+/* 06: With CTA button */
+.w-06 {
+  margin-top: 16px;
+  background: var(--amber-bg);
+  border: 1px solid var(--amber-border);
+  border-radius: 10px;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.w-06 .msg { flex: 1; font-size: 13px; }
+.w-06 button {
+  background: var(--amber);
+  color: #1a1207;
+  border: 0;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+/* 07: Progress to confidence */
+.w-07 {
+  margin-top: 16px;
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 16px;
+}
+.w-07 .row-top {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-size: 13px;
+}
+.w-07 .row-top strong { color: var(--amber); }
+.w-07 .bar {
+  height: 6px;
+  background: var(--border);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.w-07 .bar > div {
+  height: 100%;
+  width: 38%;
+  background: linear-gradient(90deg, var(--amber), #fbbf24);
+  border-radius: 999px;
+}
+.w-07 .hint {
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--text-dim);
+}
+
+/* 08: Solid pixel (heavy solid block) */
+.w-08 {
+  margin-top: 16px;
+  background: var(--amber);
+  color: #1a1207;
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* 09: Striped pattern */
+.w-09 {
+  margin-top: 16px;
+  background:
+    repeating-linear-gradient(
+      45deg,
+      rgba(245, 158, 11, 0.08),
+      rgba(245, 158, 11, 0.08) 6px,
+      rgba(245, 158, 11, 0.16) 6px,
+      rgba(245, 158, 11, 0.16) 12px
+    );
+  border: 1px solid var(--amber-border);
+  border-radius: 10px;
+  padding: 14px 16px;
+  font-size: 13px;
+  color: var(--amber);
+}
+
+/* 10: Soft tile, blue (informational, not alarming) */
+.w-10 {
+  margin-top: 16px;
+  background: var(--blue-bg);
+  border: 1px solid var(--blue-border);
+  border-radius: 10px;
+  padding: 14px 16px;
+  font-size: 13px;
+  color: #93c5fd;
+}
+.w-10 strong { color: var(--blue); margin-right: 6px; }
