@@ -283,6 +283,26 @@
     transform: translateY(0);
   }
 
+  /* ── 11. Soft word fade (combined #2 + #9, dialed back) ── */
+  .effect-soft-words .word {
+    display: inline-block;
+    opacity: 0;
+    transition: opacity 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+    margin-right: 0.28em;
+  }
+  .effect-soft-words .word.visible {
+    opacity: 1;
+  }
+  .effect-soft-words .te-stage {
+    align-items: flex-start;
+    min-height: 220px;
+    padding: 36px;
+  }
+  .effect-soft-words .te-output {
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
   /* ── 10. Aperture (clip-path reveal) ───────────────── */
   .effect-aperture .te-output {
     clip-path: inset(0 100% 0 0);
@@ -472,6 +492,19 @@
     <div class="te-stage"><div class="te-output" data-text="Hi! I'm trained on your website. Ask me anything."></div></div>
   </div>
 
+  <!-- 11. Soft word fade (combined: #2 + #9 dialed back) -->
+  <div class="te-card effect-soft-words">
+    <div class="te-card-head">
+      <div>
+        <div class="te-num">11</div>
+        <div class="te-name">Soft word fade <span style="opacity: 0.6; font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 400; margin-left: 6px;">(02 + 09 combined, subtler)</span></div>
+        <div class="te-desc">Words fade in one at a time, opacity-only — no Y-shift, no caret, no glow. Long paragraph rendered at the actual size a Dante chat reply would land in the widget so you can read the rhythm against real content.</div>
+      </div>
+      <button class="te-replay" data-replay="11">Replay</button>
+    </div>
+    <div class="te-stage"><div class="te-output" data-text="Great question! Based on the content I've been trained on, our pricing starts at $40 a month for the Starter plan, which includes one AI agent and a generous monthly credit allowance. Most teams pick Advanced at $100 a month, it bumps you up to more credits and unlocks lead capture plus human handover when a visitor needs a real person. There is also a free tier so you can test the full experience end-to-end before committing. Want me to walk you through the differences, or jump straight to setting one up?"></div></div>
+  </div>
+
   <div class="te-finale">
     <strong>How this ships.</strong> Once you pick a winner I wire it into the live ChatManager so every embedded widget on every customer site uses it. The selection lives on AgentCustomization (per-agent), with a sensible default so existing widgets pick it up on next reload.
   </div>
@@ -555,6 +588,13 @@
       words.forEach(w => output.appendChild(w));
       const wordEls = output.querySelectorAll('.word');
       wordEls.forEach((w, i) => setTimeout(() => w.classList.add('visible'), i * 90));
+    } else if (card.classList.contains('effect-soft-words')) {
+      // Combined #2 + #9, subtler: opacity-only, slightly slower per-word,
+      // longer total animation per word (0.55s) so the fade is gentler.
+      const words = tokenizeWords(text);
+      words.forEach(w => output.appendChild(w));
+      const wordEls = output.querySelectorAll('.word');
+      wordEls.forEach((w, i) => setTimeout(() => w.classList.add('visible'), i * 70));
     } else if (card.classList.contains('effect-aperture')) {
       output.textContent = text;
       // need a tick for transition to register
