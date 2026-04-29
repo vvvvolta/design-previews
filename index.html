@@ -3,232 +3,693 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Sample-size warning &middot; 10 designs</title>
-<link rel="stylesheet" href="style.css?v=4">
+<title>Dante AI · /dashboard · 10 directions</title>
+<link rel="stylesheet" href="style.css?v=20260429a">
 </head>
 <body>
 
-<nav class="tabs">
-  <div class="inner">
-    <span class="lead">Jump to</span>
-    <a class="tab" href="#d1"><span class="num">01</span> Misplaced baseline</a>
-    <a class="tab" href="#d2"><span class="num">02</span> Soft fill</a>
-    <a class="tab" href="#d3"><span class="num">03</span> Compact pill</a>
-    <a class="tab" href="#d4"><span class="num">04</span> Two-line</a>
-    <a class="tab" href="#d5"><span class="num">05</span> Banner</a>
-    <a class="tab" href="#d6"><span class="num">06</span> With CTA</a>
-    <a class="tab" href="#d7"><span class="num">07</span> Progress to confidence</a>
-    <a class="tab" href="#d8"><span class="num">08</span> Solid pixel</a>
-    <a class="tab" href="#d9"><span class="num">09</span> Striped</a>
-    <a class="tab" href="#d10"><span class="num">10</span> Blue tile</a>
+<nav class="jump">
+  <div class="jump-inner">
+    <span class="jump-lead">Jump</span>
+    <a href="#m1" title="Linear-tight">01</a>
+    <a href="#m2" title="Stripe gradient hero">02</a>
+    <a href="#m3" title="Vercel minimal mono">03</a>
+    <a href="#m4" title="Posthog data-first">04</a>
+    <a href="#m5" title="Cal.com friendly">05</a>
+    <a href="#m6" title="Bento grid">06</a>
+    <a href="#m7" title="Sidebar nav">07</a>
+    <a href="#m8" title="Onboarding-first hero">08</a>
+    <a href="#m9" title="Command-bar centric">09</a>
+    <a href="#m10" title="Two-column split">10</a>
   </div>
 </nav>
 
-<svg width="0" height="0" style="position:absolute" aria-hidden="true">
-  <defs>
-    <symbol id="i-warn" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
-      <line x1="12" y1="9" x2="12" y2="13"/>
-      <line x1="12" y1="17" x2="12.01" y2="17"/>
-    </symbol>
-    <symbol id="i-info" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <circle cx="12" cy="12" r="10"/>
-      <line x1="12" y1="16" x2="12" y2="12"/>
-      <line x1="12" y1="8" x2="12.01" y2="8"/>
-    </symbol>
-  </defs>
-</svg>
+<main class="gallery">
 
-<main class="page">
-
-  <section class="intro">
-    <h1>Sample-size warning &mdash; 10 designs</h1>
-    <p>Pick one. Each design is the same /ab-monitor card, with a different visual treatment for the "not yet statistically significant" warning. Use the tabs to jump. Type feedback at the bottom and screenshot the page back to me.</p>
-  </section>
-
-  <!-- 01 -->
-  <section class="design" id="d1">
-    <header><span class="num">01</span><h2>Misplaced baseline</h2><span class="anchor">#d1</span></header>
-    <p class="desc">Warning sits inline next to the baseline label. Smallest possible footprint &mdash; intentionally a "what not to do" baseline.</p>
-    <div class="canvas">
-      <div class="card-head"><div class="card-title">Theme mode &mdash; signup conversion</div><div class="card-meta">last 7 days</div></div>
-      <div class="card-sub">Variant assignment via Bucketeer flag <code>theme-mode</code></div>
-      <div class="col-head"><div>Variant</div><div>Conv. rate</div><div class="h-n">Sessions</div><div class="h-d">vs baseline</div><div class="h-bar"></div></div>
-      <div class="row"><div class="name"><span class="swatch"></span>Control</div><div class="metric">3.2%</div><div class="n">420</div><div class="delta">baseline <span class="w-01"><svg class="icon" width="11" height="11"><use href="#i-warn"/></svg> low n</span></div><div></div></div>
-      <div class="row"><div class="name"><span class="swatch b"></span>Variant B</div><div class="metric">4.1%</div><div class="n">380</div><div class="delta up">+0.9pp <span class="w-01"><svg class="icon" width="11" height="11"><use href="#i-warn"/></svg> low n</span></div><div></div></div>
-    </div>
-  </section>
-
-  <!-- 02 -->
-  <section class="design" id="d2">
-    <header><span class="num">02</span><h2>Soft fill, no border</h2><span class="anchor">#d2</span></header>
-    <p class="desc">Tinted background, no harsh outline. Quiet but visible.</p>
-    <div class="canvas">
-      <div class="card-head"><div class="card-title">Theme mode &mdash; signup conversion</div><div class="card-meta">last 7 days</div></div>
-      <div class="card-sub">Variant assignment via Bucketeer flag <code>theme-mode</code></div>
-      <div class="col-head"><div>Variant</div><div>Conv. rate</div><div class="h-n">Sessions</div><div class="h-d">vs baseline</div><div class="h-bar"></div></div>
-      <div class="row"><div class="name"><span class="swatch"></span>Control</div><div class="metric">3.2%</div><div class="n">420</div><div class="delta">baseline</div><div></div></div>
-      <div class="row"><div class="name"><span class="swatch b"></span>Variant B</div><div class="metric">4.1%</div><div class="n">380</div><div class="delta up">+0.9pp</div><div></div></div>
-      <div class="w-02">
-        <svg class="icon"><use href="#i-warn"/></svg>
-        <div class="text">This A/B test has a small sample size. Results may not be statistically significant. Send more traffic to capture confident insights.</div>
+  <!-- ============================================================ 01 -->
+  <section class="mock m1" id="m1">
+    <div class="mock-tag"><span class="num">01</span><span class="ttl">Linear-tight</span></div>
+    <div class="frame">
+      <div class="tb">
+        <div class="tb-left">
+          <span class="tb-logo"></span>
+          <span class="tb-wm">James @ Dante AI's workspace</span>
+          <span class="tb-plan">Pro</span>
+        </div>
+        <div class="tb-right">
+          <span class="tb-search"><span class="i i-search"></span><span>Search...</span><span class="kbd">⌘K</span></span>
+          <span class="tb-icon"><span class="i i-chart"></span></span>
+          <span class="tb-icon"><span class="i i-book"></span></span>
+          <span class="tb-avatar">JD</span>
+        </div>
+      </div>
+      <div class="body">
+        <div class="breadcrumb">
+          <span>Workspace</span><span class="sep">/</span><span class="here">Dashboard</span>
+        </div>
+        <div class="grid3">
+          <div class="tile">
+            <div class="lab">Plan</div>
+            <div class="v">Pro</div>
+            <div class="sub">30,000 credits / mo</div>
+          </div>
+          <div class="tile">
+            <div class="lab">Profile</div>
+            <div class="v">James @ Dante AI</div>
+            <div class="sub">james@dante-ai.com</div>
+          </div>
+          <div class="tile">
+            <div class="lab">Credits</div>
+            <div class="v">29,967 <span style="color:var(--text-mute);font-size:13px;">/ 30,000</span></div>
+            <div class="sub">resets Apr 1, 2126</div>
+          </div>
+        </div>
+        <div class="listhead">
+          <h3>Your AI agents</h3>
+          <button>+ New agent</button>
+        </div>
+        <div class="row">
+          <span class="av"></span>
+          <span class="nm">Dante AI's Agent</span>
+          <span class="st"><span class="dot"></span>Active</span>
+          <span class="v">0 messages</span>
+          <span class="v">0 sources</span>
+          <span class="ar">›</span>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- 03 -->
-  <section class="design" id="d3">
-    <header><span class="num">03</span><h2>Compact pill next to metric</h2><span class="anchor">#d3</span></header>
-    <p class="desc">Pill anchored to the conversion number. Glance-readable, no extra row of chrome.</p>
-    <div class="canvas">
-      <div class="card-head"><div class="card-title">Theme mode &mdash; signup conversion</div><div class="card-meta">last 7 days</div></div>
-      <div class="card-sub">Variant assignment via Bucketeer flag <code>theme-mode</code></div>
-      <div class="col-head"><div>Variant</div><div>Conv. rate</div><div class="h-n">Sessions</div><div class="h-d">vs baseline</div><div class="h-bar"></div></div>
-      <div class="row"><div class="name"><span class="swatch"></span>Control</div><div class="metric">3.2%<span class="pill-03"><svg class="icon"><use href="#i-warn"/></svg> low n</span></div><div class="n">420</div><div class="delta">baseline</div><div></div></div>
-      <div class="row"><div class="name"><span class="swatch b"></span>Variant B</div><div class="metric">4.1%<span class="pill-03"><svg class="icon"><use href="#i-warn"/></svg> low n</span></div><div class="n">380</div><div class="delta up">+0.9pp</div><div></div></div>
+  <!-- ============================================================ 02 -->
+  <section class="mock m2" id="m2">
+    <div class="mock-tag"><span class="num">02</span><span class="ttl">Stripe gradient hero</span></div>
+    <div class="frame">
+      <div class="tb">
+        <div class="tb-left">
+          <span class="tb-logo"></span>
+          <span class="tb-wm">James @ Dante AI's workspace</span>
+          <span class="tb-plan">Pro</span>
+        </div>
+        <div class="tb-right">
+          <span class="tb-search"><span class="i i-search"></span><span>Search...</span><span class="kbd">⌘K</span></span>
+          <span class="tb-icon"><span class="i i-chart"></span></span>
+          <span class="tb-icon"><span class="i i-book"></span></span>
+          <span class="tb-avatar">JD</span>
+        </div>
+      </div>
+      <div class="hero">
+        <span class="eyebrow">Welcome back</span>
+        <h1>James @ Dante AI's workspace</h1>
+        <p class="sub">All set. Your Pro plan resets 1 Apr — and you've used a fraction of your credits this cycle.</p>
+        <div class="badges">
+          <span class="badge"><span class="pill">Pro</span> · 30,000 credits / mo</span>
+          <span class="badge">1 active agent</span>
+          <span class="badge">99.9% credits remaining</span>
+        </div>
+      </div>
+      <div class="body">
+        <div class="row3">
+          <div class="glass">
+            <div class="lab">Plan</div>
+            <div class="v grad">Pro</div>
+            <div class="sub">30,000 credits / mo</div>
+          </div>
+          <div class="glass">
+            <div class="lab">Profile</div>
+            <div class="v">James @ Dante AI</div>
+            <div class="sub">james@dante-ai.com</div>
+          </div>
+          <div class="glass">
+            <div class="lab">Credits</div>
+            <div class="v">29,967 left</div>
+            <div class="sub">of 30,000 · resets 1 Apr</div>
+            <div class="meter"><span></span></div>
+          </div>
+        </div>
+        <h3>Your AI agents</h3>
+        <div class="agent">
+          <div class="icon"></div>
+          <div>
+            <div class="nm">Dante AI's Agent</div>
+            <div class="meta">
+              <span class="stat"><span class="dot"></span>Active</span>
+              <span class="stat">0 messages</span>
+              <span class="stat">0 sources</span>
+              <span class="stat">Updated never</span>
+            </div>
+          </div>
+          <span class="cta">Open ›</span>
+        </div>
+      </div>
     </div>
   </section>
 
-  <!-- 04 -->
-  <section class="design" id="d4">
-    <header><span class="num">04</span><h2>Two-line, title + body</h2><span class="anchor">#d4</span></header>
-    <p class="desc">Bold title and an explanatory line below. Reads like a real callout, not a tag.</p>
-    <div class="canvas">
-      <div class="card-head"><div class="card-title">Theme mode &mdash; signup conversion</div><div class="card-meta">last 7 days</div></div>
-      <div class="card-sub">Variant assignment via Bucketeer flag <code>theme-mode</code></div>
-      <div class="col-head"><div>Variant</div><div>Conv. rate</div><div class="h-n">Sessions</div><div class="h-d">vs baseline</div><div class="h-bar"></div></div>
-      <div class="row"><div class="name"><span class="swatch"></span>Control</div><div class="metric">3.2%</div><div class="n">420</div><div class="delta">baseline</div><div></div></div>
-      <div class="row"><div class="name"><span class="swatch b"></span>Variant B</div><div class="metric">4.1%</div><div class="n">380</div><div class="delta up">+0.9pp</div><div></div></div>
-      <div class="w-04">
-        <svg class="icon"><use href="#i-warn"/></svg>
+  <!-- ============================================================ 03 -->
+  <section class="mock m3" id="m3">
+    <div class="mock-tag"><span class="num">03</span><span class="ttl">Vercel minimal mono</span></div>
+    <div class="frame">
+      <div class="tb">
+        <div class="tb-left">
+          <span class="tb-logo"></span>
+          <span class="tb-wm">James @ Dante AI's workspace</span>
+          <span class="tb-plan">Pro</span>
+        </div>
+        <div class="tb-right">
+          <span class="tb-search"><span class="i i-search"></span><span>Search...</span><span class="kbd">⌘K</span></span>
+          <span class="tb-icon"><span class="i i-chart"></span></span>
+          <span class="tb-icon"><span class="i i-book"></span></span>
+          <span class="tb-avatar">JD</span>
+        </div>
+      </div>
+      <div class="body">
+        <h1>Workspace</h1>
+        <div class="name">James @ Dante AI's workspace</div>
+        <div class="grid3">
+          <div>
+            <div class="lab">Plan</div>
+            <div class="v">Pro</div>
+            <div class="sub">30,000 credits / mo</div>
+          </div>
+          <div>
+            <div class="lab">Profile</div>
+            <div class="v" style="font-size:18px;">James @ Dante AI</div>
+            <div class="sub">james@dante-ai.com</div>
+          </div>
+          <div>
+            <div class="lab">Credits</div>
+            <div class="v">29,967</div>
+            <div class="sub">of 30,000 · resets Apr 1</div>
+          </div>
+        </div>
+        <h2>Agents <button>+ New agent</button></h2>
+        <div class="arow">
+          <span class="ic"></span>
+          <span class="nm">Dante AI's Agent <small>· Active</small></span>
+          <span class="v">0 msgs</span>
+          <span class="v">0 sources</span>
+          <span class="ar">›</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ 04 -->
+  <section class="mock m4" id="m4">
+    <div class="mock-tag"><span class="num">04</span><span class="ttl">Posthog data-first</span></div>
+    <div class="frame">
+      <div class="tb">
+        <div class="tb-left">
+          <span class="tb-logo"></span>
+          <span class="tb-wm">James @ Dante AI's workspace</span>
+          <span class="tb-plan">Pro</span>
+        </div>
+        <div class="tb-right">
+          <span class="tb-search"><span class="i i-search"></span><span>Search...</span><span class="kbd">⌘K</span></span>
+          <span class="tb-icon"><span class="i i-chart"></span></span>
+          <span class="tb-icon"><span class="i i-book"></span></span>
+          <span class="tb-avatar">JD</span>
+        </div>
+      </div>
+      <div class="body">
+        <div class="grid">
+          <div class="chart">
+            <div class="chart-head">
+              <h3>Credits used · last 30 days</h3>
+              <span class="meta">29,967 of 30,000 left · resets Apr 1</span>
+            </div>
+            <div class="chart-val">33<small>credits used</small></div>
+            <svg class="chart-svg" viewBox="0 0 800 140" preserveAspectRatio="none">
+              <defs>
+                <linearGradient id="g4" x1="0" x2="0" y1="0" y2="1">
+                  <stop offset="0" stop-color="#8b5cf6" stop-opacity="0.4"/>
+                  <stop offset="1" stop-color="#8b5cf6" stop-opacity="0"/>
+                </linearGradient>
+              </defs>
+              <path fill="url(#g4)" d="M0,135 L0,128 L26,124 L53,126 L80,118 L106,121 L133,114 L160,116 L186,108 L213,112 L240,103 L266,107 L293,98 L320,101 L346,94 L373,98 L400,87 L426,90 L453,80 L480,82 L506,72 L533,68 L560,55 L586,51 L613,40 L640,32 L666,18 L693,10 L720,6 L746,5 L773,4 L800,4 L800,135 Z"/>
+              <path fill="none" stroke="#a78bfa" stroke-width="2" d="M0,128 L26,124 L53,126 L80,118 L106,121 L133,114 L160,116 L186,108 L213,112 L240,103 L266,107 L293,98 L320,101 L346,94 L373,98 L400,87 L426,90 L453,80 L480,82 L506,72 L533,68 L560,55 L586,51 L613,40 L640,32 L666,18 L693,10 L720,6 L746,5 L773,4 L800,4"/>
+              <g fill="#5a5f6b" font-size="10" font-family="ui-monospace,Menlo,monospace">
+                <text x="0" y="138">Apr 1</text>
+                <text x="200" y="138">Apr 8</text>
+                <text x="400" y="138">Apr 15</text>
+                <text x="600" y="138">Apr 22</text>
+                <text x="770" y="138">Apr 29</text>
+              </g>
+            </svg>
+          </div>
+          <div class="stats">
+            <div class="stat">
+              <div class="lab">Plan</div>
+              <div class="v">Pro</div>
+              <div class="sub">30,000 credits / mo</div>
+            </div>
+            <div class="stat">
+              <div class="lab">Credits left</div>
+              <div class="v">29,967</div>
+              <div class="sub">99.9% of cycle</div>
+            </div>
+          </div>
+        </div>
+        <div class="table">
+          <div class="th">
+            <span>Agent</span>
+            <span>Status</span>
+            <span>Messages 7d</span>
+            <span>Sources</span>
+            <span>Updated</span>
+            <span style="text-align:right;">Trend</span>
+          </div>
+          <div class="tr">
+            <div class="name"><span class="ic"></span>Dante AI's Agent</div>
+            <span class="pill"><span class="dot"></span>Active</span>
+            <span class="v">0</span>
+            <span class="v">0</span>
+            <span class="vm">never</span>
+            <svg viewBox="0 0 90 24"><polyline fill="none" stroke="#5a5f6b" stroke-width="1.5" points="0,18 12,17 24,18 36,17 48,18 60,17 72,18 84,17 90,18"/></svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ 05 -->
+  <section class="mock m5" id="m5">
+    <div class="mock-tag"><span class="num">05</span><span class="ttl">Cal.com friendly</span></div>
+    <div class="frame">
+      <div class="tb">
+        <div class="tb-left">
+          <span class="tb-logo"></span>
+          <span class="tb-wm">James @ Dante AI's workspace</span>
+          <span class="tb-plan">Pro</span>
+        </div>
+        <div class="tb-right">
+          <span class="tb-search"><span class="i i-search"></span><span>Search...</span><span class="kbd">⌘K</span></span>
+          <span class="tb-icon"><span class="i i-chart"></span></span>
+          <span class="tb-icon"><span class="i i-book"></span></span>
+          <span class="tb-avatar">JD</span>
+        </div>
+      </div>
+      <div class="body">
+        <div class="greet">
+          <span class="av">JD</span>
+          <div>
+            <h1>Good evening, James</h1>
+            <div class="sub">Here's what's happening in your workspace today.</div>
+          </div>
+        </div>
+        <div class="grid3">
+          <div class="card">
+            <span class="deco"></span>
+            <div class="pill">Pro plan</div>
+            <div class="lab">Plan</div>
+            <div class="v">Pro</div>
+            <div class="sub">30,000 credits / mo · resets Apr 1</div>
+          </div>
+          <div class="card">
+            <span class="deco" style="background:rgba(245,158,11,0.20);"></span>
+            <div class="lab">Profile</div>
+            <div class="v" style="font-size:17px;">James @ Dante AI</div>
+            <div class="sub">james@dante-ai.com</div>
+          </div>
+          <div class="card">
+            <span class="deco"></span>
+            <div class="lab">Credits left</div>
+            <div class="v">29,967</div>
+            <div class="sub">of 30,000 (99.9%)</div>
+          </div>
+        </div>
+        <h3>Your AI agents <span class="new"><span class="i i-plus"></span> New agent</span></h3>
+        <div class="agent">
+          <span class="ic"></span>
+          <div>
+            <div class="nm">Dante AI's Agent <span class="badge">Active</span></div>
+            <div class="meta">
+              <span><span class="i i-chat" style="width:12px;height:12px;color:var(--text-mute);"></span>0 messages</span>
+              <span><span class="i i-globe" style="width:12px;height:12px;color:var(--text-mute);"></span>0 sources</span>
+              <span><span class="i i-doc" style="width:12px;height:12px;color:var(--text-mute);"></span>Updated never</span>
+            </div>
+          </div>
+          <span class="ar">›</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ 06 -->
+  <section class="mock m6" id="m6">
+    <div class="mock-tag"><span class="num">06</span><span class="ttl">Bento grid</span></div>
+    <div class="frame">
+      <div class="tb">
+        <div class="tb-left">
+          <span class="tb-logo"></span>
+          <span class="tb-wm">James @ Dante AI's workspace</span>
+          <span class="tb-plan">Pro</span>
+        </div>
+        <div class="tb-right">
+          <span class="tb-search"><span class="i i-search"></span><span>Search...</span><span class="kbd">⌘K</span></span>
+          <span class="tb-icon"><span class="i i-chart"></span></span>
+          <span class="tb-icon"><span class="i i-book"></span></span>
+          <span class="tb-avatar">JD</span>
+        </div>
+      </div>
+      <div class="body">
+        <div class="bento">
+          <div class="b b1">
+            <span class="ic-big"></span>
+            <span class="pill"><span class="dot"></span>Active</span>
+            <h3>Dante AI's Agent</h3>
+            <div class="desc">Your default AI agent. Connect knowledge sources and start chatting to bring it to life.</div>
+            <div class="stats">
+              <div><div class="lab">Messages</div><div class="v">0</div></div>
+              <div><div class="lab">Sources</div><div class="v">0</div></div>
+              <div><div class="lab">Updated</div><div class="v">—</div></div>
+            </div>
+            <span class="cta">Open agent ›</span>
+          </div>
+          <div class="b b2">
+            <div class="lab">Plan</div>
+            <div class="v">Pro</div>
+            <div class="sub">30,000 / mo</div>
+          </div>
+          <div class="b b3">
+            <div class="lab">Credits left</div>
+            <div class="v">29,967</div>
+            <div class="sub">of 30,000</div>
+            <div class="meter"><span></span></div>
+          </div>
+          <div class="b b5">
+            <div class="lab">Recent activity</div>
+            <ul>
+              <li>
+                <span class="dot"><span class="i i-bot"></span></span>
+                <span class="who"><b>Dante AI's Agent</b> created</span>
+                <span class="when">just now</span>
+              </li>
+              <li>
+                <span class="dot"><span class="i i-users"></span></span>
+                <span class="who">Workspace upgraded to <b>Pro</b></span>
+                <span class="when">today</span>
+              </li>
+              <li>
+                <span class="dot"><span class="i i-card"></span></span>
+                <span class="who"><b>30,000</b> credits granted</span>
+                <span class="when">today</span>
+              </li>
+              <li>
+                <span class="dot"><span class="i i-cog"></span></span>
+                <span class="who">Workspace <b>James @ Dante AI's workspace</b> created</span>
+                <span class="when">today</span>
+              </li>
+            </ul>
+          </div>
+          <div class="b b4">
+            <span class="ic"></span>
+            <div>
+              <div class="nm">Dante AI's Agent <span class="pill">Active</span></div>
+              <div class="meta">0 messages · 0 sources · Updated never</div>
+            </div>
+            <span class="ar i i-arrow"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ 07 -->
+  <section class="mock m7" id="m7">
+    <div class="mock-tag"><span class="num">07</span><span class="ttl">Sidebar nav</span></div>
+    <div class="frame">
+      <aside class="nav">
+        <div class="brand"><span class="lg"></span><span class="nm">Dante AI</span></div>
+        <div class="ws">
+          <div class="row">
+            <span class="av"></span>
+            <div>
+              <div class="nm">James @ Dante AI's…</div>
+              <div class="pl">Pro plan</div>
+            </div>
+          </div>
+        </div>
+        <div class="group">
+          <div class="lab">Workspace</div>
+          <a class="on"><span class="i i-home"></span>Home</a>
+          <a><span class="i i-bot"></span>Agents</a>
+          <a><span class="i i-inbox"></span>Inbox</a>
+          <a><span class="i i-lib"></span>Knowledge</a>
+          <a><span class="i i-chart"></span>Analytics</a>
+        </div>
+        <div class="group">
+          <div class="lab">Account</div>
+          <a><span class="i i-card"></span>Billing</a>
+          <a><span class="i i-users"></span>Team</a>
+          <a><span class="i i-cog"></span>Settings</a>
+        </div>
+        <div class="footer">29,967 / 30,000 credits</div>
+      </aside>
+      <div class="pane">
+        <div class="top">
+          <h2>Home</h2>
+          <div class="right">
+            <span>James @ Dante AI's workspace · Pro</span>
+            <button class="new"><span class="i i-plus"></span>New agent</button>
+          </div>
+        </div>
         <div class="body">
-          <div class="t">Sample size is small</div>
-          <div class="b">Results may not be statistically significant yet. Send roughly <strong>1,300 more sessions</strong> across both variants to reach 95% confidence.</div>
+          <div class="grid3">
+            <div class="tile">
+              <div class="lab">Plan</div>
+              <div class="v">Pro</div>
+              <div class="sub">30,000 credits / mo</div>
+            </div>
+            <div class="tile">
+              <div class="lab">Profile</div>
+              <div class="v" style="font-size:14px;">James @ Dante AI</div>
+              <div class="sub">james@dante-ai.com</div>
+            </div>
+            <div class="tile">
+              <div class="lab">Credits left</div>
+              <div class="v">29,967</div>
+              <div class="sub">of 30,000 · resets Apr 1</div>
+            </div>
+          </div>
+          <h3>Your AI agents</h3>
+          <div class="arow">
+            <span class="ic"></span>
+            <span class="nm">Dante AI's Agent</span>
+            <span class="pill">Active</span>
+            <span class="v">0 messages · 0 sources</span>
+            <span class="ar">›</span>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- 05 -->
-  <section class="design" id="d5">
-    <header><span class="num">05</span><h2>Single-line banner</h2><span class="anchor">#d5</span></header>
-    <p class="desc">Bold left rule, single sentence. Reads like a system alert.</p>
-    <div class="canvas">
-      <div class="card-head"><div class="card-title">Theme mode &mdash; signup conversion</div><div class="card-meta">last 7 days</div></div>
-      <div class="card-sub">Variant assignment via Bucketeer flag <code>theme-mode</code></div>
-      <div class="col-head"><div>Variant</div><div>Conv. rate</div><div class="h-n">Sessions</div><div class="h-d">vs baseline</div><div class="h-bar"></div></div>
-      <div class="row"><div class="name"><span class="swatch"></span>Control</div><div class="metric">3.2%</div><div class="n">420</div><div class="delta">baseline</div><div></div></div>
-      <div class="row"><div class="name"><span class="swatch b"></span>Variant B</div><div class="metric">4.1%</div><div class="n">380</div><div class="delta up">+0.9pp</div><div></div></div>
-      <div class="w-05">
-        <svg class="icon"><use href="#i-warn"/></svg>
-        <div><strong>Sample size is small.</strong>Results may not be statistically significant.</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 06 -->
-  <section class="design" id="d6">
-    <header><span class="num">06</span><h2>With CTA button</h2><span class="anchor">#d6</span></header>
-    <p class="desc">Warning paired with the action that resolves it. Tells the user the next step, not just the problem.</p>
-    <div class="canvas">
-      <div class="card-head"><div class="card-title">Theme mode &mdash; signup conversion</div><div class="card-meta">last 7 days</div></div>
-      <div class="card-sub">Variant assignment via Bucketeer flag <code>theme-mode</code></div>
-      <div class="col-head"><div>Variant</div><div>Conv. rate</div><div class="h-n">Sessions</div><div class="h-d">vs baseline</div><div class="h-bar"></div></div>
-      <div class="row"><div class="name"><span class="swatch"></span>Control</div><div class="metric">3.2%</div><div class="n">420</div><div class="delta">baseline</div><div></div></div>
-      <div class="row"><div class="name"><span class="swatch b"></span>Variant B</div><div class="metric">4.1%</div><div class="n">380</div><div class="delta up">+0.9pp</div><div></div></div>
-      <div class="w-06">
-        <svg class="icon"><use href="#i-warn"/></svg>
-        <div class="msg"><strong>Sample size is small.</strong>Results may not be statistically significant.</div>
-        <button type="button">Increase traffic</button>
-      </div>
-    </div>
-  </section>
-
-  <!-- 07 -->
-  <section class="design" id="d7">
-    <header><span class="num">07</span><h2>Progress to confidence</h2><span class="anchor">#d7</span></header>
-    <p class="desc">Shows exactly how close the test is to statistical significance, and how much more traffic gets it there. Most informative.</p>
-    <div class="canvas">
-      <div class="card-head"><div class="card-title">Theme mode &mdash; signup conversion</div><div class="card-meta">last 7 days</div></div>
-      <div class="card-sub">Variant assignment via Bucketeer flag <code>theme-mode</code></div>
-      <div class="col-head"><div>Variant</div><div>Conv. rate</div><div class="h-n">Sessions</div><div class="h-d">vs baseline</div><div class="h-bar"></div></div>
-      <div class="row"><div class="name"><span class="swatch"></span>Control</div><div class="metric">3.2%</div><div class="n">420</div><div class="delta">baseline</div><div></div></div>
-      <div class="row"><div class="name"><span class="swatch b"></span>Variant B</div><div class="metric">4.1%</div><div class="n">380</div><div class="delta up">+0.9pp</div><div></div></div>
-      <div class="w-07">
-        <div class="row-top">
-          <div class="label"><svg class="icon"><use href="#i-warn"/></svg><strong>Not yet statistically significant</strong></div>
-          <div class="right">800 / 2,100 sessions &middot; 38% to confidence</div>
+  <!-- ============================================================ 08 -->
+  <section class="mock m8" id="m8">
+    <div class="mock-tag"><span class="num">08</span><span class="ttl">Onboarding-first hero</span></div>
+    <div class="frame">
+      <div class="tb">
+        <div class="tb-left">
+          <span class="tb-logo"></span>
+          <span class="tb-wm">James @ Dante AI's workspace</span>
+          <span class="tb-plan">Pro</span>
         </div>
-        <div class="bar-track"><div class="bar-fill"></div></div>
-        <div class="ticks">
-          <div class="tick" style="left:0%">0</div>
-          <div class="tick" style="left:25%">525</div>
-          <div class="tick" style="left:50%">1,050</div>
-          <div class="tick" style="left:75%">1,575</div>
-          <div class="tick" style="left:100%">2,100 (95%)</div>
+        <div class="tb-right">
+          <span class="tb-search"><span class="i i-search"></span><span>Search...</span><span class="kbd">⌘K</span></span>
+          <span class="tb-icon"><span class="i i-chart"></span></span>
+          <span class="tb-icon"><span class="i i-book"></span></span>
+          <span class="tb-avatar">JD</span>
         </div>
-        <div class="hint">Send <b>~1,300 more sessions</b> across both variants to reach 95% confidence.</div>
+      </div>
+      <div class="body">
+        <div class="hero">
+          <h1>Set up your AI agent</h1>
+          <div class="sub">You're 1 of 4 steps in. Finish the rest to bring Dante AI's Agent live on your site.</div>
+          <div class="progress">
+            <div class="pbar"><span></span></div>
+            <span class="pn">1 / 4</span>
+          </div>
+          <div class="steps">
+            <div class="step done">
+              <span class="badge"><span class="i i-check"></span></span>
+              <div class="title">Create agent</div>
+              <div class="desc">Dante AI's Agent created.</div>
+            </div>
+            <div class="step now">
+              <span class="badge">2</span>
+              <div class="title">Add knowledge</div>
+              <div class="desc">Connect a website, upload docs, or paste FAQ.</div>
+            </div>
+            <div class="step">
+              <span class="badge">3</span>
+              <div class="title">Customize</div>
+              <div class="desc">Tweak tone, behavior, branding.</div>
+            </div>
+            <div class="step">
+              <span class="badge">4</span>
+              <div class="title">Deploy</div>
+              <div class="desc">Embed on your site or share a link.</div>
+            </div>
+          </div>
+        </div>
+        <div class="grid3">
+          <div class="tile"><div class="lab">Plan</div><div class="v">Pro</div><div class="sub">30,000 credits / mo</div></div>
+          <div class="tile"><div class="lab">Profile</div><div class="v" style="font-size:13px;">James @ Dante AI</div><div class="sub">james@dante-ai.com</div></div>
+          <div class="tile"><div class="lab">Credits</div><div class="v">29,967 left</div><div class="sub">of 30,000 · resets Apr 1</div></div>
+        </div>
+        <h3>Your AI agents <button><span class="i i-plus"></span>New agent</button></h3>
+        <div class="agent">
+          <span class="ic"></span>
+          <div>
+            <div class="nm">Dante AI's Agent <span class="pill">Active</span></div>
+            <div class="meta">0 messages · 0 sources · Updated never</div>
+          </div>
+          <span class="ar">›</span>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- 08 -->
-  <section class="design" id="d8">
-    <header><span class="num">08</span><h2>Solid pixel</h2><span class="anchor">#d8</span></header>
-    <p class="desc">Heavy solid amber block. Maximally loud, impossible to overlook. Risk: feels alarmist.</p>
-    <div class="canvas">
-      <div class="card-head"><div class="card-title">Theme mode &mdash; signup conversion</div><div class="card-meta">last 7 days</div></div>
-      <div class="card-sub">Variant assignment via Bucketeer flag <code>theme-mode</code></div>
-      <div class="col-head"><div>Variant</div><div>Conv. rate</div><div class="h-n">Sessions</div><div class="h-d">vs baseline</div><div class="h-bar"></div></div>
-      <div class="row"><div class="name"><span class="swatch"></span>Control</div><div class="metric">3.2%</div><div class="n">420</div><div class="delta">baseline</div><div></div></div>
-      <div class="row"><div class="name"><span class="swatch b"></span>Variant B</div><div class="metric">4.1%</div><div class="n">380</div><div class="delta up">+0.9pp</div><div></div></div>
-      <div class="w-08">
-        <svg class="icon"><use href="#i-warn"/></svg>
-        <div>Sample size is small &mdash; results may not be statistically significant. Send more traffic.</div>
+  <!-- ============================================================ 09 -->
+  <section class="mock m9" id="m9">
+    <div class="mock-tag"><span class="num">09</span><span class="ttl">Command-bar centric</span></div>
+    <div class="frame">
+      <div class="tb">
+        <div class="tb-left">
+          <span class="tb-logo"></span>
+          <span class="tb-wm">James @ Dante AI's workspace</span>
+          <span class="tb-plan">Pro</span>
+        </div>
+        <div class="tb-right">
+          <span class="tb-icon"><span class="i i-chart"></span></span>
+          <span class="tb-icon"><span class="i i-book"></span></span>
+          <span class="tb-avatar">JD</span>
+        </div>
+      </div>
+      <div class="body">
+        <h1>Welcome back, <span class="em">James</span>. <span style="color:var(--text-mute);">What do you want to do?</span></h1>
+        <div class="cmd">
+          <span class="i i-search" style="width:18px;height:18px;"></span>
+          <input type="text" placeholder="Ask Dante, jump to an agent, or run a command..." />
+          <span class="kbd">⌘K</span>
+        </div>
+        <div class="chips">
+          <a><span class="i i-plus"></span>Create agent</a>
+          <a><span class="i i-globe"></span>Add website knowledge</a>
+          <a><span class="i i-doc"></span>Upload document</a>
+          <a><span class="i i-zap"></span>Customize behavior</a>
+          <a><span class="i i-card"></span>View billing</a>
+        </div>
+        <div class="grid">
+          <div class="col">
+            <h3>Pinned</h3>
+            <div class="item">
+              <span class="ic"></span>
+              <div><div class="nm">Dante AI's Agent <small>Active · 0 messages</small></div></div>
+              <span class="when">just now</span>
+            </div>
+          </div>
+          <div class="col">
+            <h3>Recent</h3>
+            <div class="item event">
+              <span class="ic"><span class="i i-bot"></span></span>
+              <div><div class="nm">Created <b>Dante AI's Agent</b></div></div>
+              <span class="when">just now</span>
+            </div>
+            <div class="item event">
+              <span class="ic"><span class="i i-card"></span></span>
+              <div><div class="nm">Upgraded workspace to <b>Pro</b></div></div>
+              <span class="when">today</span>
+            </div>
+          </div>
+        </div>
+        <div class="stats">
+          <div class="s"><div class="lab">Plan</div><div class="v">Pro</div></div>
+          <div class="s"><div class="lab">Credits left</div><div class="v">29,967</div></div>
+          <div class="s"><div class="lab">Resets</div><div class="v">Apr 1</div></div>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- 09 -->
-  <section class="design" id="d9">
-    <header><span class="num">09</span><h2>Striped pattern</h2><span class="anchor">#d9</span></header>
-    <p class="desc">Caution-tape diagonal stripes. Visually says "in progress" or "data is provisional".</p>
-    <div class="canvas">
-      <div class="card-head"><div class="card-title">Theme mode &mdash; signup conversion</div><div class="card-meta">last 7 days</div></div>
-      <div class="card-sub">Variant assignment via Bucketeer flag <code>theme-mode</code></div>
-      <div class="col-head"><div>Variant</div><div>Conv. rate</div><div class="h-n">Sessions</div><div class="h-d">vs baseline</div><div class="h-bar"></div></div>
-      <div class="row"><div class="name"><span class="swatch"></span>Control</div><div class="metric">3.2%</div><div class="n">420</div><div class="delta">baseline</div><div></div></div>
-      <div class="row"><div class="name"><span class="swatch b"></span>Variant B</div><div class="metric">4.1%</div><div class="n">380</div><div class="delta up">+0.9pp</div><div></div></div>
-      <div class="w-09">
-        <svg class="icon"><use href="#i-warn"/></svg>
-        <div>Sample size is small. Results may not be statistically significant.</div>
+  <!-- ============================================================ 10 -->
+  <section class="mock m10" id="m10">
+    <div class="mock-tag"><span class="num">10</span><span class="ttl">Two-column split</span></div>
+    <div class="frame">
+      <div class="tb">
+        <div class="tb-left">
+          <span class="tb-logo"></span>
+          <span class="tb-wm">James @ Dante AI's workspace</span>
+          <span class="tb-plan">Pro</span>
+        </div>
+        <div class="tb-right">
+          <span class="tb-search"><span class="i i-search"></span><span>Search...</span><span class="kbd">⌘K</span></span>
+          <span class="tb-icon"><span class="i i-chart"></span></span>
+          <span class="tb-icon"><span class="i i-book"></span></span>
+          <span class="tb-avatar">JD</span>
+        </div>
+      </div>
+      <div class="body">
+        <div class="grid">
+          <div class="left">
+            <h1>James @ Dante AI's workspace</h1>
+            <div class="sub">Pro plan · 1 active agent · 99.9% of credits remaining this cycle</div>
+            <h3>Your AI agents <button><span class="i i-plus"></span>New agent</button></h3>
+            <div class="agent">
+              <span class="ic"></span>
+              <div>
+                <div class="nm">Dante AI's Agent <span class="pill">Active</span></div>
+                <div class="meta">
+                  <span><span class="i i-chat" style="width:11px;height:11px;color:var(--text-mute);"></span>0 messages</span>
+                  <span><span class="i i-globe" style="width:11px;height:11px;color:var(--text-mute);"></span>0 sources</span>
+                  <span><span class="i i-doc" style="width:11px;height:11px;color:var(--text-mute);"></span>Updated never</span>
+                </div>
+              </div>
+              <span class="ar">›</span>
+            </div>
+          </div>
+          <div class="right">
+            <div class="card plan">
+              <div class="lab">Current plan</div>
+              <div class="v">Pro <span class="pl">Active</span></div>
+              <div class="sub">30,000 credits / mo · resets Apr 1, 2126</div>
+              <a>Manage plan ›</a>
+            </div>
+            <div class="card cred">
+              <div class="lab">Credits left</div>
+              <div class="v">29,967 <span style="font-size:13px;color:var(--text-mute);">/ 30,000</span></div>
+              <div class="sub">99.9% of cycle remaining</div>
+              <div class="meter"><span></span></div>
+            </div>
+            <div class="card feed">
+              <h4>Activity</h4>
+              <div class="e">
+                <span class="dot"><span class="i i-bot"></span></span>
+                <span class="who"><b>Dante AI's Agent</b> created</span>
+                <span class="when">just now</span>
+              </div>
+              <div class="e">
+                <span class="dot"><span class="i i-card"></span></span>
+                <span class="who">Plan upgraded to <b>Pro</b></span>
+                <span class="when">today</span>
+              </div>
+              <div class="e">
+                <span class="dot"><span class="i i-users"></span></span>
+                <span class="who">Workspace created</span>
+                <span class="when">today</span>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-  </section>
-
-  <!-- 10 -->
-  <section class="design" id="d10">
-    <header><span class="num">10</span><h2>Soft tile, blue (informational)</h2><span class="anchor">#d10</span></header>
-    <p class="desc">Blue instead of amber. Reads as informational, not warning. Lower stakes feel.</p>
-    <div class="canvas">
-      <div class="card-head"><div class="card-title">Theme mode &mdash; signup conversion</div><div class="card-meta">last 7 days</div></div>
-      <div class="card-sub">Variant assignment via Bucketeer flag <code>theme-mode</code></div>
-      <div class="col-head"><div>Variant</div><div>Conv. rate</div><div class="h-n">Sessions</div><div class="h-d">vs baseline</div><div class="h-bar"></div></div>
-      <div class="row"><div class="name"><span class="swatch"></span>Control</div><div class="metric">3.2%</div><div class="n">420</div><div class="delta">baseline</div><div></div></div>
-      <div class="row"><div class="name"><span class="swatch b"></span>Variant B</div><div class="metric">4.1%</div><div class="n">380</div><div class="delta up">+0.9pp</div><div></div></div>
-      <div class="w-10">
-        <svg class="icon"><use href="#i-info"/></svg>
-        <div><strong>Sample size is small.</strong>Results may not be statistically significant yet.</div>
-      </div>
-    </div>
-  </section>
-
-  <section class="feedback">
-    <h2>Feedback</h2>
-    <p class="help">Type which one you want, what to change about it, or describe a new direction. Then screenshot the whole page and paste back to Claude.</p>
-    <textarea placeholder="Reply with a number (e.g. 'pick #7') or describe what you want to change..."></textarea>
   </section>
 
 </main>
+
+<footer>
+  Dante AI · /dashboard · 10 directions · 2026-04-29 · <code>#01</code>–<code>#10</code>
+</footer>
+
 </body>
 </html>
