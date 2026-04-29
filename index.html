@@ -3,17 +3,191 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Design previews</title>
-<link rel="stylesheet" href="style.css">
+<title>Sample-size warning &middot; 10 designs</title>
+<link rel="stylesheet" href="style.css?v=2">
 </head>
 <body>
-<main class="page">
-  <h1>Design previews</h1>
-  <p class="subtitle">Spidey Bot batches, deployable. Click a batch.</p>
 
-  <div class="index-list">
-    <a href="sample-size-warning/"><span class="num">01</span><span class="label">Sample-size warning &mdash; 10 designs</span><span class="arrow">&rarr;</span></a>
+<nav class="tabs">
+  <div class="inner">
+    <span class="lead">Jump to</span>
+    <a class="tab" href="#d1"><span class="num">01</span> Misplaced baseline</a>
+    <a class="tab" href="#d2"><span class="num">02</span> Soft fill</a>
+    <a class="tab" href="#d3"><span class="num">03</span> Compact pill</a>
+    <a class="tab" href="#d4"><span class="num">04</span> Two-line</a>
+    <a class="tab" href="#d5"><span class="num">05</span> Banner</a>
+    <a class="tab" href="#d6"><span class="num">06</span> With CTA</a>
+    <a class="tab" href="#d7"><span class="num">07</span> Progress to confidence</a>
+    <a class="tab" href="#d8"><span class="num">08</span> Solid pixel</a>
+    <a class="tab" href="#d9"><span class="num">09</span> Striped</a>
+    <a class="tab" href="#d10"><span class="num">10</span> Blue tile</a>
   </div>
+</nav>
+
+<main class="page">
+
+  <section class="intro">
+    <h1>Sample-size warning &mdash; 10 designs</h1>
+    <p>Pick one. Each design is the same /ab-monitor row, with a different visual treatment for the "not yet statistically significant" warning. Type feedback at the bottom and screenshot the page to send back.</p>
+  </section>
+
+  <!-- 01 -->
+  <section class="design" id="d1">
+    <header><span class="num">01</span><h2>Misplaced baseline</h2><span class="anchor">#d1</span></header>
+    <p class="desc">Warning sits inline next to the baseline label. Tiny footprint. Easy to miss when skimming.</p>
+    <div class="canvas">
+      <div class="card-head"><div class="card-title">Theme mode &mdash; signup conversion</div><div class="card-meta">last 7 days</div></div>
+      <div class="card-sub">Variant assignment via Bucketeer flag <code>theme-mode</code></div>
+      <div class="col-head"><div>Variant</div><div>Conv. rate</div><div class="h-n">Sessions</div><div class="h-d">vs baseline</div><div class="h-bar"></div></div>
+      <div class="row"><div class="name"><span class="swatch"></span>Control</div><div class="metric">3.2%</div><div class="n">420</div><div class="delta">baseline <span class="w-01">&#9888; low n</span></div><div></div></div>
+      <div class="row"><div class="name"><span class="swatch b"></span>Variant B</div><div class="metric">4.1%</div><div class="n">380</div><div class="delta up">+0.9pp <span class="w-01">&#9888; low n</span></div><div></div></div>
+    </div>
+  </section>
+
+  <!-- 02 -->
+  <section class="design" id="d2">
+    <header><span class="num">02</span><h2>Soft fill, no border</h2><span class="anchor">#d2</span></header>
+    <p class="desc">Tinted background, no harsh outline. Quietly present, low-stakes feel.</p>
+    <div class="canvas">
+      <div class="card-head"><div class="card-title">Theme mode &mdash; signup conversion</div><div class="card-meta">last 7 days</div></div>
+      <div class="card-sub">Variant assignment via Bucketeer flag <code>theme-mode</code></div>
+      <div class="col-head"><div>Variant</div><div>Conv. rate</div><div class="h-n">Sessions</div><div class="h-d">vs baseline</div><div class="h-bar"></div></div>
+      <div class="row"><div class="name"><span class="swatch"></span>Control</div><div class="metric">3.2%</div><div class="n">420</div><div class="delta">baseline</div><div></div></div>
+      <div class="row"><div class="name"><span class="swatch b"></span>Variant B</div><div class="metric">4.1%</div><div class="n">380</div><div class="delta up">+0.9pp</div><div></div></div>
+      <div class="w-02">&#9888; This A/B test has a small sample size. Results may not be statistically significant. Send more traffic to capture confident insights.</div>
+    </div>
+  </section>
+
+  <!-- 03 -->
+  <section class="design" id="d3">
+    <header><span class="num">03</span><h2>Compact pill next to metric</h2><span class="anchor">#d3</span></header>
+    <p class="desc">Tiny pill anchored to the conversion number. Glance-readable, no extra row.</p>
+    <div class="canvas">
+      <div class="card-head"><div class="card-title">Theme mode &mdash; signup conversion</div><div class="card-meta">last 7 days</div></div>
+      <div class="card-sub">Variant assignment via Bucketeer flag <code>theme-mode</code></div>
+      <div class="col-head"><div>Variant</div><div>Conv. rate</div><div class="h-n">Sessions</div><div class="h-d">vs baseline</div><div class="h-bar"></div></div>
+      <div class="row"><div class="name"><span class="swatch"></span>Control</div><div class="metric">3.2%<span class="pill-03">low n</span></div><div class="n">420</div><div class="delta">baseline</div><div></div></div>
+      <div class="row"><div class="name"><span class="swatch b"></span>Variant B</div><div class="metric">4.1%<span class="pill-03">low n</span></div><div class="n">380</div><div class="delta up">+0.9pp</div><div></div></div>
+    </div>
+  </section>
+
+  <!-- 04 -->
+  <section class="design" id="d4">
+    <header><span class="num">04</span><h2>Two-line, title + body</h2><span class="anchor">#d4</span></header>
+    <p class="desc">Bold title on top, explanation below. Reads like a real callout instead of a tag.</p>
+    <div class="canvas">
+      <div class="card-head"><div class="card-title">Theme mode &mdash; signup conversion</div><div class="card-meta">last 7 days</div></div>
+      <div class="card-sub">Variant assignment via Bucketeer flag <code>theme-mode</code></div>
+      <div class="col-head"><div>Variant</div><div>Conv. rate</div><div class="h-n">Sessions</div><div class="h-d">vs baseline</div><div class="h-bar"></div></div>
+      <div class="row"><div class="name"><span class="swatch"></span>Control</div><div class="metric">3.2%</div><div class="n">420</div><div class="delta">baseline</div><div></div></div>
+      <div class="row"><div class="name"><span class="swatch b"></span>Variant B</div><div class="metric">4.1%</div><div class="n">380</div><div class="delta up">+0.9pp</div><div></div></div>
+      <div class="w-04">
+        <div class="t">&#9888; Sample size is small</div>
+        <div class="b">Results may not be statistically significant yet. Send more traffic to capture confident insights.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 -->
+  <section class="design" id="d5">
+    <header><span class="num">05</span><h2>Single-line banner</h2><span class="anchor">#d5</span></header>
+    <p class="desc">Bold left rule, single sentence. Reads like a chat alert.</p>
+    <div class="canvas">
+      <div class="card-head"><div class="card-title">Theme mode &mdash; signup conversion</div><div class="card-meta">last 7 days</div></div>
+      <div class="card-sub">Variant assignment via Bucketeer flag <code>theme-mode</code></div>
+      <div class="col-head"><div>Variant</div><div>Conv. rate</div><div class="h-n">Sessions</div><div class="h-d">vs baseline</div><div class="h-bar"></div></div>
+      <div class="row"><div class="name"><span class="swatch"></span>Control</div><div class="metric">3.2%</div><div class="n">420</div><div class="delta">baseline</div><div></div></div>
+      <div class="row"><div class="name"><span class="swatch b"></span>Variant B</div><div class="metric">4.1%</div><div class="n">380</div><div class="delta up">+0.9pp</div><div></div></div>
+      <div class="w-05"><strong>&#9888; Sample size is small.</strong> Results may not be statistically significant.</div>
+    </div>
+  </section>
+
+  <!-- 06 -->
+  <section class="design" id="d6">
+    <header><span class="num">06</span><h2>With CTA button</h2><span class="anchor">#d6</span></header>
+    <p class="desc">Warning + actionable next step. Tells the user what to do, not just what's wrong.</p>
+    <div class="canvas">
+      <div class="card-head"><div class="card-title">Theme mode &mdash; signup conversion</div><div class="card-meta">last 7 days</div></div>
+      <div class="card-sub">Variant assignment via Bucketeer flag <code>theme-mode</code></div>
+      <div class="col-head"><div>Variant</div><div>Conv. rate</div><div class="h-n">Sessions</div><div class="h-d">vs baseline</div><div class="h-bar"></div></div>
+      <div class="row"><div class="name"><span class="swatch"></span>Control</div><div class="metric">3.2%</div><div class="n">420</div><div class="delta">baseline</div><div></div></div>
+      <div class="row"><div class="name"><span class="swatch b"></span>Variant B</div><div class="metric">4.1%</div><div class="n">380</div><div class="delta up">+0.9pp</div><div></div></div>
+      <div class="w-06">
+        <div class="msg"><strong>&#9888; Sample size is small.</strong>Results may not be statistically significant.</div>
+        <button type="button">Increase traffic</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 07 -->
+  <section class="design" id="d7">
+    <header><span class="num">07</span><h2>Progress to confidence</h2><span class="anchor">#d7</span></header>
+    <p class="desc">Shows how close the test is to significance + how much more traffic is needed. Most informative.</p>
+    <div class="canvas">
+      <div class="card-head"><div class="card-title">Theme mode &mdash; signup conversion</div><div class="card-meta">last 7 days</div></div>
+      <div class="card-sub">Variant assignment via Bucketeer flag <code>theme-mode</code></div>
+      <div class="col-head"><div>Variant</div><div>Conv. rate</div><div class="h-n">Sessions</div><div class="h-d">vs baseline</div><div class="h-bar"></div></div>
+      <div class="row"><div class="name"><span class="swatch"></span>Control</div><div class="metric">3.2%</div><div class="n">420</div><div class="delta">baseline</div><div></div></div>
+      <div class="row"><div class="name"><span class="swatch b"></span>Variant B</div><div class="metric">4.1%</div><div class="n">380</div><div class="delta up">+0.9pp</div><div></div></div>
+      <div class="w-07">
+        <div class="row-top">
+          <div><strong>&#9888; Not yet statistically significant</strong></div>
+          <div class="right">800 / 2,100 sessions</div>
+        </div>
+        <div class="bar"><div></div></div>
+        <div class="hint">~1,300 more sessions across both variants needed for 95% confidence.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 08 -->
+  <section class="design" id="d8">
+    <header><span class="num">08</span><h2>Solid pixel</h2><span class="anchor">#d8</span></header>
+    <p class="desc">Heavy solid amber block. Maximally loud, impossible to overlook. Risk: feels alarmist.</p>
+    <div class="canvas">
+      <div class="card-head"><div class="card-title">Theme mode &mdash; signup conversion</div><div class="card-meta">last 7 days</div></div>
+      <div class="card-sub">Variant assignment via Bucketeer flag <code>theme-mode</code></div>
+      <div class="col-head"><div>Variant</div><div>Conv. rate</div><div class="h-n">Sessions</div><div class="h-d">vs baseline</div><div class="h-bar"></div></div>
+      <div class="row"><div class="name"><span class="swatch"></span>Control</div><div class="metric">3.2%</div><div class="n">420</div><div class="delta">baseline</div><div></div></div>
+      <div class="row"><div class="name"><span class="swatch b"></span>Variant B</div><div class="metric">4.1%</div><div class="n">380</div><div class="delta up">+0.9pp</div><div></div></div>
+      <div class="w-08">&#9888; Sample size is small &mdash; results may not be statistically significant. Send more traffic.</div>
+    </div>
+  </section>
+
+  <!-- 09 -->
+  <section class="design" id="d9">
+    <header><span class="num">09</span><h2>Striped pattern</h2><span class="anchor">#d9</span></header>
+    <p class="desc">Diagonal stripe bg. Visually says "in progress" or "not final" without strong alarm.</p>
+    <div class="canvas">
+      <div class="card-head"><div class="card-title">Theme mode &mdash; signup conversion</div><div class="card-meta">last 7 days</div></div>
+      <div class="card-sub">Variant assignment via Bucketeer flag <code>theme-mode</code></div>
+      <div class="col-head"><div>Variant</div><div>Conv. rate</div><div class="h-n">Sessions</div><div class="h-d">vs baseline</div><div class="h-bar"></div></div>
+      <div class="row"><div class="name"><span class="swatch"></span>Control</div><div class="metric">3.2%</div><div class="n">420</div><div class="delta">baseline</div><div></div></div>
+      <div class="row"><div class="name"><span class="swatch b"></span>Variant B</div><div class="metric">4.1%</div><div class="n">380</div><div class="delta up">+0.9pp</div><div></div></div>
+      <div class="w-09">&#9888; Sample size is small. Results may not be statistically significant.</div>
+    </div>
+  </section>
+
+  <!-- 10 -->
+  <section class="design" id="d10">
+    <header><span class="num">10</span><h2>Soft tile, blue (informational)</h2><span class="anchor">#d10</span></header>
+    <p class="desc">Blue instead of amber. Reads as informational, not warning. Lower stakes feel.</p>
+    <div class="canvas">
+      <div class="card-head"><div class="card-title">Theme mode &mdash; signup conversion</div><div class="card-meta">last 7 days</div></div>
+      <div class="card-sub">Variant assignment via Bucketeer flag <code>theme-mode</code></div>
+      <div class="col-head"><div>Variant</div><div>Conv. rate</div><div class="h-n">Sessions</div><div class="h-d">vs baseline</div><div class="h-bar"></div></div>
+      <div class="row"><div class="name"><span class="swatch"></span>Control</div><div class="metric">3.2%</div><div class="n">420</div><div class="delta">baseline</div><div></div></div>
+      <div class="row"><div class="name"><span class="swatch b"></span>Variant B</div><div class="metric">4.1%</div><div class="n">380</div><div class="delta up">+0.9pp</div><div></div></div>
+      <div class="w-10"><strong>&#9432; Sample size is small.</strong> Results may not be statistically significant yet.</div>
+    </div>
+  </section>
+
+  <section class="feedback">
+    <h2>Feedback</h2>
+    <p class="help">Type which one you want, what to change about it, or describe a new direction. Then screenshot the whole page and paste back to Claude.</p>
+    <textarea placeholder="Reply with a number (e.g. 'pick #7') or describe what you want to change..."></textarea>
+  </section>
+
 </main>
 </body>
 </html>
