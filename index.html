@@ -11,7 +11,7 @@
 <nav class="jump">
   <div class="jump-inner">
     <span class="jump-lead">Jump</span>
-    <a href="#m1" title="Linear-tight">01</a>
+    <a href="#m1" title="Sidebar + gradient hero + time-aware greeting + onboarding">01</a>
     <a href="#m2" title="Stripe gradient hero">02</a>
     <a href="#m3" title="Vercel minimal mono">03</a>
     <a href="#m4" title="Posthog data-first">04</a>
@@ -28,53 +28,128 @@
 
   <!-- ============================================================ 01 -->
   <section class="mock m1" id="m1">
-    <div class="mock-tag"><span class="num">01</span><span class="ttl">Linear-tight</span></div>
+    <div class="mock-tag"><span class="num">01</span><span class="ttl">Sidebar + gradient hero + time-aware greeting + onboarding</span></div>
     <div class="frame">
-      <div class="tb">
-        <div class="tb-left">
-          <span class="tb-logo"></span>
-          <span class="tb-wm">James @ Dante AI's workspace</span>
-          <span class="tb-plan">Pro</span>
+      <aside class="nav">
+        <div class="brand"><span class="lg"></span><span class="nm">Dante AI</span></div>
+        <div class="ws">
+          <div class="row">
+            <span class="av"></span>
+            <div>
+              <div class="nm">James @ Dante AI's…</div>
+              <div class="pl">Pro plan</div>
+            </div>
+          </div>
         </div>
-        <div class="tb-right">
+        <div class="group">
+          <div class="lab">Workspace</div>
+          <a class="on"><span class="i i-home"></span>Home</a>
+          <a><span class="i i-bot"></span>Agents</a>
+          <a><span class="i i-inbox"></span>Inbox</a>
+          <a><span class="i i-lib"></span>Knowledge</a>
+          <a><span class="i i-chart"></span>Analytics</a>
+        </div>
+        <div class="group">
+          <div class="lab">Account</div>
+          <a><span class="i i-card"></span>Billing</a>
+          <a><span class="i i-users"></span>Team</a>
+          <a><span class="i i-cog"></span>Settings</a>
+        </div>
+        <div class="footer">29,967 / 30,000 credits</div>
+      </aside>
+      <div class="pane">
+        <div class="top">
           <span class="tb-search"><span class="i i-search"></span><span>Search...</span><span class="kbd">⌘K</span></span>
           <span class="tb-icon"><span class="i i-chart"></span></span>
           <span class="tb-icon"><span class="i i-book"></span></span>
           <span class="tb-avatar">JD</span>
         </div>
-      </div>
-      <div class="body">
-        <div class="breadcrumb">
-          <span>Workspace</span><span class="sep">/</span><span class="here">Dashboard</span>
-        </div>
-        <div class="grid3">
-          <div class="tile">
-            <div class="lab">Plan</div>
-            <div class="v">Pro</div>
-            <div class="sub">30,000 credits / mo</div>
+        <div class="hero">
+          <div class="greet-row">
+            <span class="av">JD</span>
+            <div>
+              <h1><span class="m1-greet">Good evening</span>, James</h1>
+              <div class="sub">Here's what's happening in your workspace today.</div>
+            </div>
           </div>
-          <div class="tile">
-            <div class="lab">Profile</div>
-            <div class="v">James @ Dante AI</div>
-            <div class="sub">james@dante-ai.com</div>
-          </div>
-          <div class="tile">
-            <div class="lab">Credits</div>
-            <div class="v">29,967 <span style="color:var(--text-mute);font-size:13px;">/ 30,000</span></div>
-            <div class="sub">resets Apr 1, 2126</div>
+          <div class="badges">
+            <span class="badge"><span class="pill">Pro</span> · 30,000 credits / mo</span>
+            <span class="badge"><span class="dot"></span>1 active agent</span>
+            <span class="badge">99.9% credits remaining this cycle</span>
           </div>
         </div>
-        <div class="listhead">
-          <h3>Your AI agents</h3>
-          <button>+ New agent</button>
-        </div>
-        <div class="row">
-          <span class="av"></span>
-          <span class="nm">Dante AI's Agent</span>
-          <span class="st"><span class="dot"></span>Active</span>
-          <span class="v">0 messages</span>
-          <span class="v">0 sources</span>
-          <span class="ar">›</span>
+        <div class="body">
+          <div class="onb">
+            <div class="head">
+              <div>
+                <div class="tt">Set up your AI agent</div>
+                <div class="sub">You're 1 of 4 steps in. Finish the rest to bring Dante AI's Agent live on your site.</div>
+              </div>
+              <div class="progress">
+                <div class="pbar"><span></span></div>
+                <span class="pn">1 / 4</span>
+              </div>
+            </div>
+            <div class="steps">
+              <div class="step done">
+                <span class="badge"><span class="i i-check"></span></span>
+                <div class="title">Create agent</div>
+                <div class="desc">Dante AI's Agent created.</div>
+              </div>
+              <div class="step now">
+                <span class="badge">2</span>
+                <div class="title">Add knowledge</div>
+                <div class="desc">Connect a website, upload docs, or paste FAQ.</div>
+              </div>
+              <div class="step">
+                <span class="badge">3</span>
+                <div class="title">Customize</div>
+                <div class="desc">Tweak tone, behavior, branding.</div>
+              </div>
+              <div class="step">
+                <span class="badge">4</span>
+                <div class="title">Deploy</div>
+                <div class="desc">Embed on your site or share a link.</div>
+              </div>
+            </div>
+          </div>
+          <div class="cards">
+            <div class="card">
+              <span class="deco"></span>
+              <div class="lab">Plan</div>
+              <div class="v grad">Pro</div>
+              <div class="sub">30,000 credits / mo · resets Apr 1</div>
+            </div>
+            <div class="card">
+              <span class="deco" style="background:rgba(245,158,11,0.20);"></span>
+              <div class="lab">Profile</div>
+              <div class="v sm">James @ Dante AI</div>
+              <div class="sub">james@dante-ai.com</div>
+            </div>
+            <div class="card">
+              <span class="deco"></span>
+              <div class="lab">Credits left</div>
+              <div class="v">29,967</div>
+              <div class="sub">of 30,000 (99.9%)</div>
+              <div class="meter"><span></span></div>
+            </div>
+          </div>
+          <div class="agents-head">
+            <h3>Your AI agents</h3>
+            <span class="new"><span class="i i-plus"></span> New agent</span>
+          </div>
+          <div class="agent">
+            <span class="icon"></span>
+            <div>
+              <div class="nm">Dante AI's Agent <span class="badge">Active</span></div>
+              <div class="meta">
+                <span><span class="i i-chat" style="width:12px;height:12px;color:var(--text-mute);"></span>0 messages</span>
+                <span><span class="i i-globe" style="width:12px;height:12px;color:var(--text-mute);"></span>0 sources</span>
+                <span><span class="i i-doc" style="width:12px;height:12px;color:var(--text-mute);"></span>Updated never</span>
+              </div>
+            </div>
+            <span class="ar">Open ›</span>
+          </div>
         </div>
       </div>
     </div>
@@ -686,6 +761,14 @@
   </section>
 
 </main>
+
+<script>
+  (function () {
+    var h = new Date().getHours();
+    var greet = h < 12 ? "Good morning" : h < 18 ? "Good afternoon" : "Good evening";
+    document.querySelectorAll(".m1-greet").forEach(function (el) { el.textContent = greet; });
+  })();
+</script>
 
 <footer>
   Dante AI · /dashboard · 10 directions · 2026-04-29 · <code>#01</code>–<code>#10</code>
