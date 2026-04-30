@@ -1,0 +1,1497 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dante AI · sidebar credits + upgrade modal · 10 directions</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --purple-500: #8b5cf6;
+    --purple-400: #a78bfa;
+    --purple-600: #7c3aed;
+    --purple-700: #6d28d9;
+  }
+  html { scroll-behavior: smooth; scroll-padding-top: 64px; }
+  body {
+    background: #0c0d10;
+    color: #e8eaee;
+    font-family: -apple-system, BlinkMacSystemFont, "Inter", "SF Pro Display", "Segoe UI", system-ui, sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  a, button { font: inherit; color: inherit; text-decoration: none; cursor: pointer; }
+  button { background: none; border: 0; }
+
+  /* ===== single-line jump nav ===== */
+  .jump {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(8, 9, 11, 0.88);
+    backdrop-filter: saturate(180%) blur(14px);
+    border-bottom: 1px solid #1f232b;
+  }
+  .jump-inner {
+    max-width: 1640px; margin: 0 auto;
+    display: flex; align-items: center; gap: 4px;
+    padding: 8px 24px;
+    white-space: nowrap; overflow-x: auto;
+  }
+  .jump-lead { font-size: 10px; color: #5a5f6b; text-transform: uppercase; letter-spacing: 0.12em; margin-right: 8px; }
+  .jump-inner a {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 26px; height: 26px;
+    border: 1px solid #1f232b; border-radius: 6px;
+    font-size: 11px; font-variant-numeric: tabular-nums;
+    color: #8a8f9a;
+    transition: color 80ms, border-color 80ms, background 80ms;
+  }
+  .jump-inner a:hover { color: #e8eaee; border-color: var(--purple-500); background: rgba(139,92,246,0.12); }
+
+  .gallery { padding: 24px 0 96px; }
+  .mock { max-width: 1640px; margin: 56px auto 0; padding: 0 24px; }
+  .mock:first-child { margin-top: 12px; }
+  .mock-tag {
+    display: flex; align-items: baseline; gap: 12px;
+    padding: 0 4px 16px;
+    font-size: 12px; color: #5a5f6b;
+  }
+  .mock-tag .num {
+    color: #c4c8d0;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.08em;
+    font-weight: 600;
+  }
+  .mock-tag .ttl { color: #8a8f9a; }
+
+  /* ===== stage layouts ===== */
+  .stage {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .pair {
+    display: grid;
+    grid-template-rows: auto auto;
+    gap: 12px;
+  }
+  .pair-label {
+    font-size: 10px; color: #5a5f6b;
+    text-transform: uppercase; letter-spacing: 0.14em;
+    padding: 0 4px;
+  }
+
+  /* The card lives in a faux sidebar slice for context */
+  .sidebar-slice {
+    border-radius: 14px;
+    overflow: hidden;
+    border: 1px solid #1f232b;
+    height: 360px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    position: relative;
+  }
+  .sidebar-slice.dark {
+    background: linear-gradient(180deg, #0a0b0d 0%, #0d0e11 100%);
+  }
+  .sidebar-slice.light {
+    background: linear-gradient(180deg, #fafafa 0%, #f4f4f5 100%);
+    border-color: #e4e4e7;
+  }
+  .sidebar-slice .nav-stub {
+    flex: 1;
+    padding: 20px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .sidebar-slice .nav-stub .row-stub {
+    height: 30px;
+    border-radius: 7px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 10px;
+    font-size: 12.5px;
+    opacity: 0.55;
+  }
+  .sidebar-slice .nav-stub .row-stub .dot { width: 14px; height: 14px; border-radius: 4px; flex: none; }
+  .sidebar-slice.dark .nav-stub .row-stub { color: #8a8f9a; }
+  .sidebar-slice.dark .nav-stub .row-stub .dot { background: #2a2f3a; }
+  .sidebar-slice.light .nav-stub .row-stub { color: #71717a; }
+  .sidebar-slice.light .nav-stub .row-stub .dot { background: #d4d4d8; }
+  .sidebar-slice .nav-stub .row-stub.on { opacity: 1; }
+  .sidebar-slice.dark .nav-stub .row-stub.on { background: #15171c; color: #e8eaee; }
+  .sidebar-slice.light .nav-stub .row-stub.on { background: #ffffff; color: #18181b; box-shadow: 0 1px 2px rgba(0,0,0,.04); }
+
+  .card-wrap {
+    padding: 14px;
+    border-top: 1px solid transparent;
+  }
+  .sidebar-slice.dark .card-wrap { border-top-color: #1f232b; }
+  .sidebar-slice.light .card-wrap { border-top-color: #e4e4e7; }
+
+  /* The modal lives on a dimmed page backdrop for context */
+  .backdrop {
+    border-radius: 14px;
+    overflow: hidden;
+    border: 1px solid #1f232b;
+    height: 480px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 32px;
+  }
+  .backdrop.dark {
+    background:
+      radial-gradient(900px 480px at 50% -10%, rgba(139,92,246,0.10), transparent 60%),
+      #08090b;
+  }
+  .backdrop.light {
+    background:
+      radial-gradient(900px 480px at 50% -10%, rgba(139,92,246,0.08), transparent 60%),
+      #f4f4f5;
+    border-color: #e4e4e7;
+  }
+  .backdrop::before {
+    content: "";
+    position: absolute; inset: 0;
+    background: rgba(0,0,0,0.32);
+  }
+  .backdrop.light::before { background: rgba(15,18,28,0.20); }
+  .modal {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 520px;
+  }
+
+  /* Common typography helpers */
+  .num-2xl { font-size: 38px; font-weight: 700; letter-spacing: -0.02em; line-height: 1; font-variant-numeric: tabular-nums; }
+  .num-xl  { font-size: 30px; font-weight: 700; letter-spacing: -0.02em; line-height: 1; font-variant-numeric: tabular-nums; }
+  .num-md  { font-size: 22px; font-weight: 700; letter-spacing: -0.01em; line-height: 1; font-variant-numeric: tabular-nums; }
+  .label-sm { font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; }
+  .upgrade-btn {
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    width: 100%;
+    height: 40px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 14px;
+    background: linear-gradient(135deg, var(--purple-500) 0%, var(--purple-700) 100%);
+    color: #fff;
+    box-shadow: 0 1px 0 rgba(255,255,255,0.10) inset, 0 8px 22px -10px rgba(124,58,237,0.55);
+    transition: transform 80ms ease;
+  }
+  .upgrade-btn:hover { transform: translateY(-1px); }
+  .upgrade-btn .orb {
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    background:
+      radial-gradient(circle at 30% 30%, #ffffff 0%, #d4c5ff 35%, #7c3aed 80%);
+    box-shadow: 0 0 0 1px rgba(255,255,255,0.2) inset;
+  }
+
+  /* Modal common shell */
+  .m-shell {
+    border-radius: 16px;
+    padding: 28px 28px 24px;
+    box-shadow: 0 30px 80px -20px rgba(0,0,0,0.50);
+  }
+  .m-shell.dark { background: #15171c; border: 1px solid #22262e; }
+  .m-shell.light { background: #ffffff; border: 1px solid #e4e4e7; }
+  .m-head { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 6px; }
+  .m-head h3 { font-size: 20px; font-weight: 700; letter-spacing: -0.01em; }
+  .m-head .x {
+    width: 28px; height: 28px; border-radius: 8px;
+    display: inline-flex; align-items: center; justify-content: center;
+    border: 1px solid currentColor;
+    opacity: 0.4;
+    font-size: 14px;
+    line-height: 1;
+  }
+  .m-shell.dark .m-head .x { border-color: #2a2f3a; color: #8a8f9a; }
+  .m-shell.light .m-head .x { border-color: #d4d4d8; color: #71717a; }
+  .m-sub { font-size: 13px; margin-bottom: 18px; }
+  .m-shell.dark .m-sub { color: #8a8f9a; }
+  .m-shell.light .m-sub { color: #71717a; }
+  .m-plans { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 18px; }
+  .m-plan { padding: 14px; border-radius: 10px; border: 1px solid; position: relative; }
+  .m-shell.dark .m-plan { border-color: #22262e; background: #0e1015; }
+  .m-shell.light .m-plan { border-color: #e4e4e7; background: #fafafa; }
+  .m-plan.rec { border-color: var(--purple-500); background: rgba(139,92,246,0.08); }
+  .m-plan .pn { font-size: 12px; font-weight: 600; opacity: 0.7; margin-bottom: 4px; }
+  .m-plan .pp { font-size: 20px; font-weight: 700; line-height: 1.1; }
+  .m-plan .pp small { font-size: 11px; font-weight: 500; opacity: 0.6; margin-left: 2px; }
+  .m-plan .pc { font-size: 11px; opacity: 0.65; margin-top: 4px; }
+  .m-plan .badge {
+    position: absolute; top: -8px; right: 10px;
+    background: var(--purple-500); color: #fff;
+    padding: 2px 8px; border-radius: 999px;
+    font-size: 9px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+  }
+  .m-feats { list-style: none; padding: 0; margin: 0 0 20px 0; display: grid; gap: 8px; }
+  .m-feats li { display: flex; align-items: center; gap: 8px; font-size: 13px; }
+  .m-feats li::before {
+    content: "";
+    width: 14px; height: 14px; border-radius: 50%;
+    background: var(--purple-500);
+    flex: none;
+    background-image: linear-gradient(135deg, var(--purple-400), var(--purple-700));
+  }
+  .m-foot { display: flex; gap: 10px; align-items: center; justify-content: space-between; }
+  .m-cta {
+    flex: 1;
+    height: 44px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, var(--purple-500) 0%, var(--purple-700) 100%);
+    color: #fff;
+    font-weight: 600;
+    font-size: 14px;
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    box-shadow: 0 8px 20px -8px rgba(124,58,237,0.55);
+  }
+  .m-link {
+    font-size: 12px;
+    opacity: 0.6;
+  }
+
+  /* Bar primitives */
+  .bar { height: 6px; border-radius: 999px; position: relative; overflow: hidden; }
+  .bar.dark { background: #1f232b; }
+  .bar.light { background: #e4e4e7; }
+  .bar > span {
+    position: absolute; left: 0; top: 0; bottom: 0;
+    width: 2%;
+    background: linear-gradient(90deg, var(--purple-400), var(--purple-500));
+    border-radius: 999px;
+  }
+
+  /* ============================================================
+     ## 01 — Faithful refinement (matches reference closely)
+     ============================================================ */
+  .v01.dark  { background: #0c0d10; border-radius: 12px; padding: 16px; border: 1px solid #1f232b; }
+  .v01.light { background: #ffffff; border-radius: 12px; padding: 16px; border: 1px solid #e4e4e7; }
+  .v01 .hd { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; }
+  .v01 .hd .l { font-weight: 700; font-size: 15px; }
+  .v01 .hd .r { font-size: 12px; opacity: 0.65; }
+  .v01 .met { display: flex; align-items: baseline; gap: 6px; margin-bottom: 12px; }
+  .v01 .met .v { font-size: 32px; font-weight: 700; letter-spacing: -0.02em; line-height: 1; }
+  .v01 .met .t { font-size: 13px; opacity: 0.65; }
+  .v01 .resets { font-size: 11.5px; opacity: 0.6; margin: 12px 0 12px; }
+
+  /* ============================================================
+     ## 02 — Ring meter
+     ============================================================ */
+  .v02.dark  { background: #0c0d10; border-radius: 12px; padding: 16px; border: 1px solid #1f232b; }
+  .v02.light { background: #ffffff; border-radius: 12px; padding: 16px; border: 1px solid #e4e4e7; }
+  .v02 .top { display: flex; align-items: center; gap: 14px; margin-bottom: 12px; }
+  .v02 .ring {
+    width: 64px; height: 64px; flex: none;
+    border-radius: 50%;
+    background: conic-gradient(var(--purple-500) 7.2deg, transparent 7.2deg);
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+  }
+  .v02.dark .ring::before { content: ""; position: absolute; inset: 6px; border-radius: 50%; background: #0c0d10; border: 1px solid #1f232b; }
+  .v02.light .ring::before { content: ""; position: absolute; inset: 6px; border-radius: 50%; background: #ffffff; border: 1px solid #e4e4e7; }
+  .v02 .ring .pct { position: relative; z-index: 1; font-size: 13px; font-weight: 700; }
+  .v02 .info .l { font-size: 11px; opacity: 0.65; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 2px; }
+  .v02 .info .v { font-size: 17px; font-weight: 700; line-height: 1.15; }
+  .v02 .info .s { font-size: 12px; opacity: 0.6; margin-top: 1px; }
+  .v02 .resets { font-size: 11.5px; opacity: 0.6; margin: 10px 0 12px; padding-top: 10px; border-top: 1px dashed; }
+  .v02.dark .resets { border-top-color: #1f232b; }
+  .v02.light .resets { border-top-color: #e4e4e7; }
+
+  /* ============================================================
+     ## 03 — Compact pill (one-row, minimalist)
+     ============================================================ */
+  .v03 { padding: 10px; border-radius: 12px; }
+  .v03.dark  { background: rgba(139,92,246,0.06); border: 1px solid rgba(139,92,246,0.18); }
+  .v03.light { background: rgba(139,92,246,0.06); border: 1px solid rgba(139,92,246,0.20); }
+  .v03 .row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .v03 .icon-pill {
+    width: 32px; height: 32px; border-radius: 9px; flex: none;
+    background: linear-gradient(135deg, var(--purple-500), var(--purple-700));
+    display: flex; align-items: center; justify-content: center;
+  }
+  .v03 .icon-pill .orb {
+    width: 16px; height: 16px; border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, #fff 0%, #d4c5ff 35%, #7c3aed 80%);
+  }
+  .v03 .stat { flex: 1; }
+  .v03 .stat .v { font-weight: 700; font-size: 14px; }
+  .v03 .stat .v small { opacity: 0.6; font-weight: 500; font-size: 12px; }
+  .v03 .stat .s { font-size: 11px; opacity: 0.65; }
+  .v03 .upgrade-mini {
+    height: 28px; padding: 0 12px; border-radius: 8px;
+    background: linear-gradient(135deg, var(--purple-500), var(--purple-700));
+    color: #fff; font-weight: 600; font-size: 12px;
+    display: inline-flex; align-items: center; gap: 4px;
+  }
+
+  /* ============================================================
+     ## 04 — Stripe-gradient hero
+     ============================================================ */
+  .v04 {
+    border-radius: 14px;
+    padding: 18px;
+    color: #fff;
+    background:
+      radial-gradient(140% 100% at 100% 0%, rgba(255,255,255,0.16), transparent 50%),
+      linear-gradient(135deg, #6d28d9 0%, #8b5cf6 60%, #c4b5fd 130%);
+    box-shadow: 0 12px 40px -16px rgba(124,58,237,0.55);
+  }
+  .v04 .hd { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+  .v04 .hd .l { font-weight: 700; font-size: 14px; }
+  .v04 .hd .pl {
+    font-size: 10px; padding: 3px 8px;
+    background: rgba(255,255,255,0.18);
+    border-radius: 999px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.08em;
+  }
+  .v04 .met { font-size: 32px; font-weight: 700; letter-spacing: -0.02em; line-height: 1; margin-bottom: 4px; }
+  .v04 .met small { font-size: 13px; font-weight: 500; opacity: 0.85; margin-left: 4px; }
+  .v04 .bar {
+    height: 4px; background: rgba(255,255,255,0.20);
+    border-radius: 999px; overflow: hidden; position: relative;
+    margin: 12px 0;
+  }
+  .v04 .bar > span { position: absolute; left: 0; top: 0; bottom: 0; width: 2%; background: #fff; border-radius: 999px; }
+  .v04 .resets { font-size: 11.5px; opacity: 0.85; margin-bottom: 12px; }
+  .v04 .upgrade-btn {
+    background: #ffffff;
+    color: #6d28d9;
+    box-shadow: 0 1px 0 rgba(255,255,255,0.30) inset, 0 4px 12px -4px rgba(0,0,0,0.20);
+  }
+  .v04 .upgrade-btn .orb { background: radial-gradient(circle at 30% 30%, #fff 0%, #c4b5fd 35%, #6d28d9 80%); }
+
+  /* ============================================================
+     ## 05 — Outlined card (low-vis, hierarchy via type only)
+     ============================================================ */
+  .v05 { padding: 4px 4px 10px; }
+  .v05 .hd { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 6px; padding: 0 4px; }
+  .v05 .hd .l { font-size: 12px; opacity: 0.55; text-transform: uppercase; letter-spacing: 0.10em; font-weight: 600; }
+  .v05 .hd .r { font-size: 11px; opacity: 0.55; }
+  .v05 .met { display: flex; align-items: baseline; gap: 6px; padding: 0 4px; }
+  .v05 .met .v { font-size: 28px; font-weight: 700; line-height: 1; letter-spacing: -0.02em; }
+  .v05 .met .t { font-size: 12px; opacity: 0.55; }
+  .v05 .bar { margin: 12px 4px 10px; }
+  .v05 .resets { font-size: 11px; opacity: 0.55; padding: 0 4px; margin-bottom: 12px; }
+  .v05 .upgrade-min {
+    margin: 0 4px;
+    height: 36px; border-radius: 9px;
+    border: 1px solid;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 600;
+    gap: 6px;
+  }
+  .v05.dark .upgrade-min { border-color: var(--purple-500); color: var(--purple-400); background: rgba(139,92,246,0.08); }
+  .v05.light .upgrade-min { border-color: var(--purple-500); color: var(--purple-600); background: rgba(139,92,246,0.06); }
+
+  /* ============================================================
+     ## 06 — Split tiles (stats card + CTA card)
+     ============================================================ */
+  .v06 { display: grid; gap: 8px; }
+  .v06 .stat-card { padding: 14px; border-radius: 11px; }
+  .v06 .stat-card .top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .v06 .stat-card .top .l { font-size: 11.5px; opacity: 0.6; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600; }
+  .v06 .stat-card .top .pl {
+    font-size: 10px; font-weight: 600; padding: 2px 7px; border-radius: 999px;
+  }
+  .v06.dark .stat-card { background: #15171c; border: 1px solid #22262e; }
+  .v06.light .stat-card { background: #ffffff; border: 1px solid #e4e4e7; }
+  .v06.dark .stat-card .top .pl { background: #1f232b; color: #a78bfa; }
+  .v06.light .stat-card .top .pl { background: #f4f3ff; color: #6d28d9; }
+  .v06 .stat-card .met { display: flex; align-items: baseline; gap: 6px; }
+  .v06 .stat-card .met .v { font-size: 26px; font-weight: 700; letter-spacing: -0.02em; line-height: 1; }
+  .v06 .stat-card .met .t { font-size: 12px; opacity: 0.6; }
+  .v06 .stat-card .resets { font-size: 11px; opacity: 0.55; margin-top: 8px; }
+  .v06 .cta-card {
+    padding: 12px;
+    border-radius: 11px;
+    background: linear-gradient(135deg, rgba(139,92,246,0.18), rgba(124,58,237,0.10));
+    border: 1px solid rgba(139,92,246,0.30);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .v06 .cta-card .ic {
+    width: 32px; height: 32px; flex: none; border-radius: 8px;
+    background: linear-gradient(135deg, var(--purple-500), var(--purple-700));
+    display: flex; align-items: center; justify-content: center;
+  }
+  .v06 .cta-card .ic .orb { width: 16px; height: 16px; border-radius: 50%; background: radial-gradient(circle at 30% 30%, #fff 0%, #d4c5ff 35%, #7c3aed 80%); }
+  .v06 .cta-card .txt { flex: 1; min-width: 0; }
+  .v06 .cta-card .txt .l { font-weight: 600; font-size: 13px; }
+  .v06 .cta-card .txt .s { font-size: 11px; opacity: 0.65; }
+  .v06 .cta-card .arr { opacity: 0.7; font-size: 14px; }
+
+  /* ============================================================
+     ## 07 — CTA-first (button as hero)
+     ============================================================ */
+  .v07 { padding: 6px; }
+  .v07 .upgrade-hero {
+    width: 100%;
+    border-radius: 12px;
+    padding: 14px 16px;
+    background: linear-gradient(135deg, var(--purple-500) 0%, var(--purple-700) 100%);
+    color: #fff;
+    display: flex; align-items: center; gap: 12px;
+    text-align: left;
+    box-shadow: 0 12px 36px -16px rgba(124,58,237,0.55);
+    margin-bottom: 10px;
+  }
+  .v07 .upgrade-hero .orb {
+    width: 28px; height: 28px; border-radius: 50%; flex: none;
+    background: radial-gradient(circle at 30% 30%, #fff 0%, #d4c5ff 35%, #7c3aed 80%);
+    box-shadow: 0 0 0 4px rgba(255,255,255,0.10);
+  }
+  .v07 .upgrade-hero .lab { flex: 1; min-width: 0; }
+  .v07 .upgrade-hero .lab b { display: block; font-weight: 700; font-size: 15px; line-height: 1.2; }
+  .v07 .upgrade-hero .lab small { opacity: 0.85; font-size: 11px; }
+  .v07 .upgrade-hero .arr { opacity: 0.85; }
+  .v07 .meta { padding: 4px 6px; }
+  .v07 .meta .row { display: flex; justify-content: space-between; font-size: 11.5px; }
+  .v07 .meta .row .l { opacity: 0.6; }
+  .v07 .meta .row .r { font-weight: 600; font-variant-numeric: tabular-nums; }
+  .v07 .meta .bar { margin: 8px 0 6px; }
+  .v07 .meta .resets { font-size: 11px; opacity: 0.55; }
+
+  /* ============================================================
+     ## 08 — Linear data row (full bar prominent)
+     ============================================================ */
+  .v08 { padding: 14px; border-radius: 12px; }
+  .v08.dark  { background: #0c0d10; border: 1px solid #1f232b; }
+  .v08.light { background: #ffffff; border: 1px solid #e4e4e7; }
+  .v08 .row { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 6px; }
+  .v08 .row .l { font-weight: 600; font-size: 13px; }
+  .v08 .row .r { font-size: 12px; opacity: 0.65; font-variant-numeric: tabular-nums; }
+  .v08 .bar-big { height: 10px; border-radius: 999px; position: relative; overflow: hidden; margin: 8px 0; }
+  .v08.dark .bar-big { background: #1f232b; }
+  .v08.light .bar-big { background: #f4f4f5; }
+  .v08 .bar-big > span {
+    position: absolute; left: 0; top: 0; bottom: 0;
+    width: 2%; border-radius: 999px;
+    background: linear-gradient(90deg, var(--purple-400), var(--purple-500), var(--purple-700));
+  }
+  .v08 .meta { display: flex; justify-content: space-between; align-items: center; font-size: 11px; opacity: 0.65; margin-bottom: 12px; }
+  .v08 .meta .pl { color: var(--purple-400); font-weight: 600; }
+  .v08.light .meta .pl { color: var(--purple-600); }
+
+  /* ============================================================
+     ## 09 — Bento mini (stats split + button below)
+     ============================================================ */
+  .v09 { display: grid; gap: 6px; }
+  .v09 .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+  .v09 .tile { padding: 12px; border-radius: 10px; }
+  .v09.dark .tile  { background: #15171c; border: 1px solid #22262e; }
+  .v09.light .tile { background: #ffffff; border: 1px solid #e4e4e7; }
+  .v09 .tile .l { font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600; opacity: 0.55; margin-bottom: 6px; }
+  .v09 .tile .v { font-size: 22px; font-weight: 700; line-height: 1; letter-spacing: -0.02em; }
+  .v09 .tile .s { font-size: 11px; opacity: 0.55; margin-top: 4px; }
+  .v09 .tile.cycle .v { font-size: 14px; }
+  .v09 .resets-inline { font-size: 11px; opacity: 0.55; padding: 0 4px; margin-top: 2px; }
+
+  /* ============================================================
+     ## 10 — Glass / frosted
+     ============================================================ */
+  .v10 {
+    padding: 16px;
+    border-radius: 14px;
+    backdrop-filter: blur(20px) saturate(180%);
+    position: relative;
+  }
+  .v10.dark {
+    background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+    border: 1px solid rgba(255,255,255,0.08);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.06);
+  }
+  .v10.light {
+    background: linear-gradient(180deg, rgba(255,255,255,0.85), rgba(255,255,255,0.55));
+    border: 1px solid rgba(0,0,0,0.06);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.80);
+  }
+  .v10 .hd { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+  .v10 .hd .l { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.10em; opacity: 0.65; }
+  .v10 .hd .pl {
+    font-size: 10px; padding: 3px 8px; border-radius: 999px;
+    border: 1px solid;
+    font-weight: 600;
+  }
+  .v10.dark .hd .pl  { border-color: rgba(167,139,250,0.40); color: var(--purple-400); background: rgba(139,92,246,0.10); }
+  .v10.light .hd .pl { border-color: rgba(124,58,237,0.30); color: var(--purple-700); background: rgba(139,92,246,0.08); }
+  .v10 .met { display: flex; align-items: baseline; gap: 6px; margin-bottom: 12px; }
+  .v10 .met .v { font-size: 30px; font-weight: 700; letter-spacing: -0.02em; line-height: 1; }
+  .v10 .met .t { font-size: 12px; opacity: 0.65; }
+  .v10 .resets { font-size: 11px; opacity: 0.65; margin: 12px 0 12px; }
+  .v10 .upgrade-glass {
+    width: 100%; height: 40px; border-radius: 10px;
+    background: linear-gradient(135deg, rgba(139,92,246,0.85), rgba(124,58,237,0.85));
+    color: #fff; font-weight: 600; font-size: 14px;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.18);
+    box-shadow: 0 8px 22px -10px rgba(124,58,237,0.55);
+  }
+  .v10 .upgrade-glass .orb {
+    width: 18px; height: 18px; border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, #fff 0%, #d4c5ff 35%, #7c3aed 80%);
+  }
+
+  /* ===== light/dark scoping for cards (per design) ===== */
+  .light-scope { color: #18181b; }
+  .dark-scope  { color: #e8eaee; }
+
+  /* footer */
+  footer {
+    text-align: center;
+    color: #5a5f6b;
+    font-size: 11px;
+    padding: 32px 0 8px;
+  }
+  footer code { background: #15171c; padding: 1px 6px; border-radius: 4px; }
+</style>
+</head>
+<body>
+
+<nav class="jump">
+  <div class="jump-inner">
+    <span class="jump-lead">Jump</span>
+    <a href="#m1" title="Faithful refinement">01</a>
+    <a href="#m2" title="Ring meter">02</a>
+    <a href="#m3" title="Compact pill">03</a>
+    <a href="#m4" title="Stripe gradient hero">04</a>
+    <a href="#m5" title="Outlined / type-only">05</a>
+    <a href="#m6" title="Split tiles">06</a>
+    <a href="#m7" title="CTA-first hero">07</a>
+    <a href="#m8" title="Linear data row">08</a>
+    <a href="#m9" title="Bento mini">09</a>
+    <a href="#m10" title="Glass / frosted">10</a>
+  </div>
+</nav>
+
+<main class="gallery">
+
+  <!-- ============================================================ 01 -->
+  <section class="mock" id="m1">
+    <div class="mock-tag"><span class="num">01</span><span class="ttl">Faithful refinement — same shape, sharper hierarchy + tightened spacing</span></div>
+    <div class="stage">
+      <div class="pair">
+        <div class="pair-label">Card · Light</div>
+        <div class="sidebar-slice light light-scope">
+          <div class="nav-stub">
+            <div class="row-stub"><span class="dot"></span>Home</div>
+            <div class="row-stub on"><span class="dot"></span>Agents</div>
+            <div class="row-stub"><span class="dot"></span>Inbox</div>
+          </div>
+          <div class="card-wrap">
+            <div class="v01 light">
+              <div class="hd"><span class="l">Usage</span><span class="r">Free plan</span></div>
+              <div class="met"><span class="v">2</span><span class="t">/ 100 credits</span></div>
+              <div class="bar light"><span></span></div>
+              <div class="resets">Resets on 31 May 2026</div>
+              <button class="upgrade-btn"><span class="orb"></span>Upgrade</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="pair">
+        <div class="pair-label">Card · Dark</div>
+        <div class="sidebar-slice dark dark-scope">
+          <div class="nav-stub">
+            <div class="row-stub"><span class="dot"></span>Home</div>
+            <div class="row-stub on"><span class="dot"></span>Agents</div>
+            <div class="row-stub"><span class="dot"></span>Inbox</div>
+          </div>
+          <div class="card-wrap">
+            <div class="v01 dark">
+              <div class="hd"><span class="l">Usage</span><span class="r">Free plan</span></div>
+              <div class="met"><span class="v">2</span><span class="t">/ 100 credits</span></div>
+              <div class="bar dark"><span></span></div>
+              <div class="resets">Resets on 31 May 2026</div>
+              <button class="upgrade-btn"><span class="orb"></span>Upgrade</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="pair">
+        <div class="pair-label">Modal · Light</div>
+        <div class="backdrop light light-scope">
+          <div class="modal">
+            <div class="m-shell light">
+              <div class="m-head"><h3>Upgrade your plan</h3><span class="x">×</span></div>
+              <div class="m-sub">Pick a plan to unlock more credits and remove the limits.</div>
+              <div class="m-plans">
+                <div class="m-plan"><div class="pn">Starter</div><div class="pp">$19<small>/mo</small></div><div class="pc">2,000 credits</div></div>
+                <div class="m-plan rec"><span class="badge">Popular</span><div class="pn">Pro</div><div class="pp">$49<small>/mo</small></div><div class="pc">10,000 credits</div></div>
+                <div class="m-plan"><div class="pn">Business</div><div class="pp">$199<small>/mo</small></div><div class="pc">50,000 credits</div></div>
+              </div>
+              <ul class="m-feats">
+                <li>Unlimited agents</li>
+                <li>Custom branding</li>
+                <li>Priority support</li>
+              </ul>
+              <div class="m-foot"><button class="m-cta"><span class="orb" style="width:16px;height:16px;border-radius:50%;background:radial-gradient(circle at 30% 30%,#fff 0%,#d4c5ff 35%,#7c3aed 80%)"></span>Upgrade to Pro</button><a class="m-link">Compare all plans →</a></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="pair">
+        <div class="pair-label">Modal · Dark</div>
+        <div class="backdrop dark dark-scope">
+          <div class="modal">
+            <div class="m-shell dark">
+              <div class="m-head"><h3>Upgrade your plan</h3><span class="x">×</span></div>
+              <div class="m-sub">Pick a plan to unlock more credits and remove the limits.</div>
+              <div class="m-plans">
+                <div class="m-plan"><div class="pn">Starter</div><div class="pp">$19<small>/mo</small></div><div class="pc">2,000 credits</div></div>
+                <div class="m-plan rec"><span class="badge">Popular</span><div class="pn">Pro</div><div class="pp">$49<small>/mo</small></div><div class="pc">10,000 credits</div></div>
+                <div class="m-plan"><div class="pn">Business</div><div class="pp">$199<small>/mo</small></div><div class="pc">50,000 credits</div></div>
+              </div>
+              <ul class="m-feats">
+                <li>Unlimited agents</li>
+                <li>Custom branding</li>
+                <li>Priority support</li>
+              </ul>
+              <div class="m-foot"><button class="m-cta"><span class="orb" style="width:16px;height:16px;border-radius:50%;background:radial-gradient(circle at 30% 30%,#fff 0%,#d4c5ff 35%,#7c3aed 80%)"></span>Upgrade to Pro</button><a class="m-link">Compare all plans →</a></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ 02 -->
+  <section class="mock" id="m2">
+    <div class="mock-tag"><span class="num">02</span><span class="ttl">Ring meter — circular usage indicator</span></div>
+    <div class="stage">
+      <div class="pair">
+        <div class="pair-label">Card · Light</div>
+        <div class="sidebar-slice light light-scope">
+          <div class="nav-stub">
+            <div class="row-stub"><span class="dot"></span>Home</div>
+            <div class="row-stub on"><span class="dot"></span>Agents</div>
+            <div class="row-stub"><span class="dot"></span>Inbox</div>
+          </div>
+          <div class="card-wrap">
+            <div class="v02 light">
+              <div class="top">
+                <div class="ring"><span class="pct">2%</span></div>
+                <div class="info"><div class="l">Free plan</div><div class="v">2 / 100</div><div class="s">credits used this cycle</div></div>
+              </div>
+              <div class="resets">Resets on 31 May 2026</div>
+              <button class="upgrade-btn"><span class="orb"></span>Upgrade</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="pair">
+        <div class="pair-label">Card · Dark</div>
+        <div class="sidebar-slice dark dark-scope">
+          <div class="nav-stub">
+            <div class="row-stub"><span class="dot"></span>Home</div>
+            <div class="row-stub on"><span class="dot"></span>Agents</div>
+            <div class="row-stub"><span class="dot"></span>Inbox</div>
+          </div>
+          <div class="card-wrap">
+            <div class="v02 dark">
+              <div class="top">
+                <div class="ring"><span class="pct">2%</span></div>
+                <div class="info"><div class="l">Free plan</div><div class="v">2 / 100</div><div class="s">credits used this cycle</div></div>
+              </div>
+              <div class="resets">Resets on 31 May 2026</div>
+              <button class="upgrade-btn"><span class="orb"></span>Upgrade</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="pair">
+        <div class="pair-label">Modal · Light</div>
+        <div class="backdrop light light-scope">
+          <div class="modal">
+            <div class="m-shell light">
+              <div class="m-head"><h3>Get more credits</h3><span class="x">×</span></div>
+              <div class="m-sub">You're on Free with 100 credits/month. Pick a plan that fits.</div>
+              <div class="m-plans">
+                <div class="m-plan"><div class="pn">Starter</div><div class="pp">$19<small>/mo</small></div><div class="pc">2,000 credits</div></div>
+                <div class="m-plan rec"><span class="badge">Best value</span><div class="pn">Pro</div><div class="pp">$49<small>/mo</small></div><div class="pc">10,000 credits</div></div>
+                <div class="m-plan"><div class="pn">Business</div><div class="pp">$199<small>/mo</small></div><div class="pc">50,000 credits</div></div>
+              </div>
+              <ul class="m-feats">
+                <li>Unlimited agents on every paid plan</li>
+                <li>Custom branding from Pro and up</li>
+                <li>Cancel anytime</li>
+              </ul>
+              <div class="m-foot"><button class="m-cta">Continue to checkout →</button><a class="m-link">See full comparison</a></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="pair">
+        <div class="pair-label">Modal · Dark</div>
+        <div class="backdrop dark dark-scope">
+          <div class="modal">
+            <div class="m-shell dark">
+              <div class="m-head"><h3>Get more credits</h3><span class="x">×</span></div>
+              <div class="m-sub">You're on Free with 100 credits/month. Pick a plan that fits.</div>
+              <div class="m-plans">
+                <div class="m-plan"><div class="pn">Starter</div><div class="pp">$19<small>/mo</small></div><div class="pc">2,000 credits</div></div>
+                <div class="m-plan rec"><span class="badge">Best value</span><div class="pn">Pro</div><div class="pp">$49<small>/mo</small></div><div class="pc">10,000 credits</div></div>
+                <div class="m-plan"><div class="pn">Business</div><div class="pp">$199<small>/mo</small></div><div class="pc">50,000 credits</div></div>
+              </div>
+              <ul class="m-feats">
+                <li>Unlimited agents on every paid plan</li>
+                <li>Custom branding from Pro and up</li>
+                <li>Cancel anytime</li>
+              </ul>
+              <div class="m-foot"><button class="m-cta">Continue to checkout →</button><a class="m-link">See full comparison</a></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ 03 -->
+  <section class="mock" id="m3">
+    <div class="mock-tag"><span class="num">03</span><span class="ttl">Compact pill — single ambient row, smallest footprint</span></div>
+    <div class="stage">
+      <div class="pair">
+        <div class="pair-label">Card · Light</div>
+        <div class="sidebar-slice light light-scope">
+          <div class="nav-stub">
+            <div class="row-stub"><span class="dot"></span>Home</div>
+            <div class="row-stub on"><span class="dot"></span>Agents</div>
+            <div class="row-stub"><span class="dot"></span>Inbox</div>
+            <div class="row-stub"><span class="dot"></span>Knowledge</div>
+            <div class="row-stub"><span class="dot"></span>Analytics</div>
+          </div>
+          <div class="card-wrap">
+            <div class="v03 light">
+              <div class="row">
+                <div class="icon-pill"><span class="orb"></span></div>
+                <div class="stat"><div class="v">2 <small>/ 100 credits</small></div><div class="s">Free plan · resets 31 May</div></div>
+                <button class="upgrade-mini">Upgrade →</button>
+              </div>
+              <div class="bar light"><span></span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="pair">
+        <div class="pair-label">Card · Dark</div>
+        <div class="sidebar-slice dark dark-scope">
+          <div class="nav-stub">
+            <div class="row-stub"><span class="dot"></span>Home</div>
+            <div class="row-stub on"><span class="dot"></span>Agents</div>
+            <div class="row-stub"><span class="dot"></span>Inbox</div>
+            <div class="row-stub"><span class="dot"></span>Knowledge</div>
+            <div class="row-stub"><span class="dot"></span>Analytics</div>
+          </div>
+          <div class="card-wrap">
+            <div class="v03 dark">
+              <div class="row">
+                <div class="icon-pill"><span class="orb"></span></div>
+                <div class="stat"><div class="v">2 <small>/ 100 credits</small></div><div class="s">Free plan · resets 31 May</div></div>
+                <button class="upgrade-mini">Upgrade →</button>
+              </div>
+              <div class="bar dark"><span></span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="pair">
+        <div class="pair-label">Modal · Light</div>
+        <div class="backdrop light light-scope">
+          <div class="modal">
+            <div class="m-shell light" style="max-width:440px;">
+              <div class="m-head"><h3>Run out of credits less.</h3><span class="x">×</span></div>
+              <div class="m-sub">A single quick choice — keep it simple.</div>
+              <div class="m-plans" style="grid-template-columns:1fr 1fr;">
+                <div class="m-plan"><div class="pn">Pro · monthly</div><div class="pp">$49<small>/mo</small></div><div class="pc">10,000 credits</div></div>
+                <div class="m-plan rec"><span class="badge">2 mo free</span><div class="pn">Pro · yearly</div><div class="pp">$490<small>/yr</small></div><div class="pc">10,000 credits / mo</div></div>
+              </div>
+              <div class="m-foot"><button class="m-cta">Upgrade to Pro</button><a class="m-link">Other plans</a></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="pair">
+        <div class="pair-label">Modal · Dark</div>
+        <div class="backdrop dark dark-scope">
+          <div class="modal">
+            <div class="m-shell dark" style="max-width:440px;">
+              <div class="m-head"><h3>Run out of credits less.</h3><span class="x">×</span></div>
+              <div class="m-sub">A single quick choice — keep it simple.</div>
+              <div class="m-plans" style="grid-template-columns:1fr 1fr;">
+                <div class="m-plan"><div class="pn">Pro · monthly</div><div class="pp">$49<small>/mo</small></div><div class="pc">10,000 credits</div></div>
+                <div class="m-plan rec"><span class="badge">2 mo free</span><div class="pn">Pro · yearly</div><div class="pp">$490<small>/yr</small></div><div class="pc">10,000 credits / mo</div></div>
+              </div>
+              <div class="m-foot"><button class="m-cta">Upgrade to Pro</button><a class="m-link">Other plans</a></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ 04 -->
+  <section class="mock" id="m4">
+    <div class="mock-tag"><span class="num">04</span><span class="ttl">Stripe gradient hero — bold, on-brand purple block</span></div>
+    <div class="stage">
+      <div class="pair">
+        <div class="pair-label">Card · Light</div>
+        <div class="sidebar-slice light light-scope">
+          <div class="nav-stub">
+            <div class="row-stub"><span class="dot"></span>Home</div>
+            <div class="row-stub on"><span class="dot"></span>Agents</div>
+            <div class="row-stub"><span class="dot"></span>Inbox</div>
+          </div>
+          <div class="card-wrap">
+            <div class="v04">
+              <div class="hd"><span class="l">Usage</span><span class="pl">Free</span></div>
+              <div class="met">2<small>/ 100 credits</small></div>
+              <div class="bar"><span></span></div>
+              <div class="resets">Resets on 31 May 2026</div>
+              <button class="upgrade-btn"><span class="orb"></span>Upgrade</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="pair">
+        <div class="pair-label">Card · Dark</div>
+        <div class="sidebar-slice dark dark-scope">
+          <div class="nav-stub">
+            <div class="row-stub"><span class="dot"></span>Home</div>
+            <div class="row-stub on"><span class="dot"></span>Agents</div>
+            <div class="row-stub"><span class="dot"></span>Inbox</div>
+          </div>
+          <div class="card-wrap">
+            <div class="v04">
+              <div class="hd"><span class="l">Usage</span><span class="pl">Free</span></div>
+              <div class="met">2<small>/ 100 credits</small></div>
+              <div class="bar"><span></span></div>
+              <div class="resets">Resets on 31 May 2026</div>
+              <button class="upgrade-btn"><span class="orb"></span>Upgrade</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="pair">
+        <div class="pair-label">Modal · Light</div>
+        <div class="backdrop light light-scope">
+          <div class="modal">
+            <div class="m-shell light" style="background:linear-gradient(180deg,#fdfcff 0%, #f7f3ff 100%);">
+              <div class="m-head"><h3 style="background:linear-gradient(135deg,#7c3aed,#c4b5fd);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Build agents without limits</h3><span class="x">×</span></div>
+              <div class="m-sub">Move past the 100-credit cap with a plan that grows with you.</div>
+              <div class="m-plans">
+                <div class="m-plan"><div class="pn">Starter</div><div class="pp">$19<small>/mo</small></div><div class="pc">2,000 credits</div></div>
+                <div class="m-plan rec"><span class="badge">Recommended</span><div class="pn">Pro</div><div class="pp">$49<small>/mo</small></div><div class="pc">10,000 credits</div></div>
+                <div class="m-plan"><div class="pn">Business</div><div class="pp">$199<small>/mo</small></div><div class="pc">50,000 credits</div></div>
+              </div>
+              <ul class="m-feats">
+                <li>10,000 credits / month, every month</li>
+                <li>Unlimited agents and knowledge sources</li>
+                <li>Custom branding (no Powered by Dante)</li>
+              </ul>
+              <div class="m-foot"><button class="m-cta">Upgrade to Pro · $49 / mo</button><a class="m-link">View all plans</a></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="pair">
+        <div class="pair-label">Modal · Dark</div>
+        <div class="backdrop dark dark-scope">
+          <div class="modal">
+            <div class="m-shell dark" style="background:radial-gradient(120% 80% at 0% 0%, rgba(139,92,246,0.18), transparent 60%), #15171c;">
+              <div class="m-head"><h3 style="background:linear-gradient(135deg,#a78bfa,#fff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Build agents without limits</h3><span class="x">×</span></div>
+              <div class="m-sub">Move past the 100-credit cap with a plan that grows with you.</div>
+              <div class="m-plans">
+                <div class="m-plan"><div class="pn">Starter</div><div class="pp">$19<small>/mo</small></div><div class="pc">2,000 credits</div></div>
+                <div class="m-plan rec"><span class="badge">Recommended</span><div class="pn">Pro</div><div class="pp">$49<small>/mo</small></div><div class="pc">10,000 credits</div></div>
+                <div class="m-plan"><div class="pn">Business</div><div class="pp">$199<small>/mo</small></div><div class="pc">50,000 credits</div></div>
+              </div>
+              <ul class="m-feats">
+                <li>10,000 credits / month, every month</li>
+                <li>Unlimited agents and knowledge sources</li>
+                <li>Custom branding (no Powered by Dante)</li>
+              </ul>
+              <div class="m-foot"><button class="m-cta">Upgrade to Pro · $49 / mo</button><a class="m-link">View all plans</a></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ 05 -->
+  <section class="mock" id="m5">
+    <div class="mock-tag"><span class="num">05</span><span class="ttl">Outlined / type-only — quietest, hierarchy from text alone</span></div>
+    <div class="stage">
+      <div class="pair">
+        <div class="pair-label">Card · Light</div>
+        <div class="sidebar-slice light light-scope">
+          <div class="nav-stub">
+            <div class="row-stub"><span class="dot"></span>Home</div>
+            <div class="row-stub on"><span class="dot"></span>Agents</div>
+            <div class="row-stub"><span class="dot"></span>Inbox</div>
+            <div class="row-stub"><span class="dot"></span>Knowledge</div>
+          </div>
+          <div class="card-wrap">
+            <div class="v05 light">
+              <div class="hd"><span class="l">Usage</span><span class="r">Free plan</span></div>
+              <div class="met"><span class="v">2</span><span class="t">of 100 credits</span></div>
+              <div class="bar light"><span></span></div>
+              <div class="resets">Resets on 31 May 2026</div>
+              <button class="upgrade-min"><span class="orb" style="width:14px;height:14px;border-radius:50%;background:radial-gradient(circle at 30% 30%,#fff 0%,#d4c5ff 35%,#7c3aed 80%);"></span>Upgrade</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="pair">
+        <div class="pair-label">Card · Dark</div>
+        <div class="sidebar-slice dark dark-scope">
+          <div class="nav-stub">
+            <div class="row-stub"><span class="dot"></span>Home</div>
+            <div class="row-stub on"><span class="dot"></span>Agents</div>
+            <div class="row-stub"><span class="dot"></span>Inbox</div>
+            <div class="row-stub"><span class="dot"></span>Knowledge</div>
+          </div>
+          <div class="card-wrap">
+            <div class="v05 dark">
+              <div class="hd"><span class="l">Usage</span><span class="r">Free plan</span></div>
+              <div class="met"><span class="v">2</span><span class="t">of 100 credits</span></div>
+              <div class="bar dark"><span></span></div>
+              <div class="resets">Resets on 31 May 2026</div>
+              <button class="upgrade-min"><span class="orb" style="width:14px;height:14px;border-radius:50%;background:radial-gradient(circle at 30% 30%,#fff 0%,#d4c5ff 35%,#7c3aed 80%);"></span>Upgrade</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="pair">
+        <div class="pair-label">Modal · Light</div>
+        <div class="backdrop light light-scope">
+          <div class="modal">
+            <div class="m-shell light" style="border:1px solid #e4e4e7; box-shadow:0 12px 40px -16px rgba(0,0,0,0.18);">
+              <div class="m-head"><h3 style="font-weight:600;">Choose a plan</h3><span class="x">×</span></div>
+              <div class="m-sub">Plain table, no decoration. Pick what fits.</div>
+              <div style="display:grid;grid-template-columns:1fr auto auto auto;gap:12px 24px;font-size:13px;align-items:center;border-top:1px solid #e4e4e7;border-bottom:1px solid #e4e4e7;padding:12px 0;margin-bottom:18px;">
+                <span style="font-weight:600;">Plan</span><span style="opacity:.6;">Credits</span><span style="opacity:.6;">Price</span><span></span>
+                <span>Free</span><span>100</span><span>$0</span><span style="opacity:.55;">Current</span>
+                <span style="font-weight:600;">Starter</span><span>2,000</span><span>$19</span><a style="color:var(--purple-600);font-weight:600;">Choose →</a>
+                <span style="font-weight:600;color:var(--purple-700);">Pro</span><span>10,000</span><span>$49</span><a style="color:var(--purple-600);font-weight:600;">Choose →</a>
+                <span style="font-weight:600;">Business</span><span>50,000</span><span>$199</span><a style="color:var(--purple-600);font-weight:600;">Choose →</a>
+              </div>
+              <div class="m-foot"><a class="m-link">Compare features →</a><a class="m-link">Cancel</a></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="pair">
+        <div class="pair-label">Modal · Dark</div>
+        <div class="backdrop dark dark-scope">
+          <div class="modal">
+            <div class="m-shell dark" style="border:1px solid #22262e;">
+              <div class="m-head"><h3 style="font-weight:600;">Choose a plan</h3><span class="x">×</span></div>
+              <div class="m-sub">Plain table, no decoration. Pick what fits.</div>
+              <div style="display:grid;grid-template-columns:1fr auto auto auto;gap:12px 24px;font-size:13px;align-items:center;border-top:1px solid #22262e;border-bottom:1px solid #22262e;padding:12px 0;margin-bottom:18px;">
+                <span style="font-weight:600;">Plan</span><span style="opacity:.6;">Credits</span><span style="opacity:.6;">Price</span><span></span>
+                <span>Free</span><span>100</span><span>$0</span><span style="opacity:.55;">Current</span>
+                <span style="font-weight:600;">Starter</span><span>2,000</span><span>$19</span><a style="color:var(--purple-400);font-weight:600;">Choose →</a>
+                <span style="font-weight:600;color:var(--purple-400);">Pro</span><span>10,000</span><span>$49</span><a style="color:var(--purple-400);font-weight:600;">Choose →</a>
+                <span style="font-weight:600;">Business</span><span>50,000</span><span>$199</span><a style="color:var(--purple-400);font-weight:600;">Choose →</a>
+              </div>
+              <div class="m-foot"><a class="m-link">Compare features →</a><a class="m-link">Cancel</a></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ 06 -->
+  <section class="mock" id="m6">
+    <div class="mock-tag"><span class="num">06</span><span class="ttl">Split tiles — usage stays neutral, CTA is the colored sibling</span></div>
+    <div class="stage">
+      <div class="pair">
+        <div class="pair-label">Card · Light</div>
+        <div class="sidebar-slice light light-scope">
+          <div class="nav-stub">
+            <div class="row-stub"><span class="dot"></span>Home</div>
+            <div class="row-stub on"><span class="dot"></span>Agents</div>
+            <div class="row-stub"><span class="dot"></span>Inbox</div>
+          </div>
+          <div class="card-wrap">
+            <div class="v06 light">
+              <div class="stat-card">
+                <div class="top"><span class="l">Usage</span><span class="pl">Free</span></div>
+                <div class="met"><span class="v">2</span><span class="t">/ 100 credits</span></div>
+                <div class="bar light" style="margin-top:10px;"><span></span></div>
+                <div class="resets">Resets on 31 May 2026</div>
+              </div>
+              <button class="cta-card">
+                <span class="ic"><span class="orb"></span></span>
+                <span class="txt"><span class="l">Get more credits</span><span class="s">From $19/mo · cancel anytime</span></span>
+                <span class="arr">›</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="pair">
+        <div class="pair-label">Card · Dark</div>
+        <div class="sidebar-slice dark dark-scope">
+          <div class="nav-stub">
+            <div class="row-stub"><span class="dot"></span>Home</div>
+            <div class="row-stub on"><span class="dot"></span>Agents</div>
+            <div class="row-stub"><span class="dot"></span>Inbox</div>
+          </div>
+          <div class="card-wrap">
+            <div class="v06 dark">
+              <div class="stat-card">
+                <div class="top"><span class="l">Usage</span><span class="pl">Free</span></div>
+                <div class="met"><span class="v">2</span><span class="t">/ 100 credits</span></div>
+                <div class="bar dark" style="margin-top:10px;"><span></span></div>
+                <div class="resets">Resets on 31 May 2026</div>
+              </div>
+              <button class="cta-card">
+                <span class="ic"><span class="orb"></span></span>
+                <span class="txt"><span class="l">Get more credits</span><span class="s">From $19/mo · cancel anytime</span></span>
+                <span class="arr">›</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="pair">
+        <div class="pair-label">Modal · Light</div>
+        <div class="backdrop light light-scope">
+          <div class="modal">
+            <div class="m-shell light">
+              <div class="m-head"><h3>Get more credits</h3><span class="x">×</span></div>
+              <div class="m-sub">Each plan adds credits, agents, and removes the Free-plan limits.</div>
+              <div class="m-plans">
+                <div class="m-plan"><div class="pn">Starter</div><div class="pp">$19<small>/mo</small></div><div class="pc">2,000 credits / mo</div></div>
+                <div class="m-plan rec"><span class="badge">Most picked</span><div class="pn">Pro</div><div class="pp">$49<small>/mo</small></div><div class="pc">10,000 credits / mo</div></div>
+                <div class="m-plan"><div class="pn">Business</div><div class="pp">$199<small>/mo</small></div><div class="pc">50,000 credits / mo</div></div>
+              </div>
+              <ul class="m-feats">
+                <li>Pay yearly and get 2 months free</li>
+                <li>Top-ups available on every plan</li>
+                <li>Downgrade or cancel from Settings any time</li>
+              </ul>
+              <div class="m-foot"><button class="m-cta">Continue with Pro</button><a class="m-link">See full comparison</a></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="pair">
+        <div class="pair-label">Modal · Dark</div>
+        <div class="backdrop dark dark-scope">
+          <div class="modal">
+            <div class="m-shell dark">
+              <div class="m-head"><h3>Get more credits</h3><span class="x">×</span></div>
+              <div class="m-sub">Each plan adds credits, agents, and removes the Free-plan limits.</div>
+              <div class="m-plans">
+                <div class="m-plan"><div class="pn">Starter</div><div class="pp">$19<small>/mo</small></div><div class="pc">2,000 credits / mo</div></div>
+                <div class="m-plan rec"><span class="badge">Most picked</span><div class="pn">Pro</div><div class="pp">$49<small>/mo</small></div><div class="pc">10,000 credits / mo</div></div>
+                <div class="m-plan"><div class="pn">Business</div><div class="pp">$199<small>/mo</small></div><div class="pc">50,000 credits / mo</div></div>
+              </div>
+              <ul class="m-feats">
+                <li>Pay yearly and get 2 months free</li>
+                <li>Top-ups available on every plan</li>
+                <li>Downgrade or cancel from Settings any time</li>
+              </ul>
+              <div class="m-foot"><button class="m-cta">Continue with Pro</button><a class="m-link">See full comparison</a></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ 07 -->
+  <section class="mock" id="m7">
+    <div class="mock-tag"><span class="num">07</span><span class="ttl">CTA-first — button is the hero, stats become caption</span></div>
+    <div class="stage">
+      <div class="pair">
+        <div class="pair-label">Card · Light</div>
+        <div class="sidebar-slice light light-scope">
+          <div class="nav-stub">
+            <div class="row-stub"><span class="dot"></span>Home</div>
+            <div class="row-stub on"><span class="dot"></span>Agents</div>
+            <div class="row-stub"><span class="dot"></span>Inbox</div>
+          </div>
+          <div class="card-wrap">
+            <div class="v07">
+              <button class="upgrade-hero"><span class="orb"></span><span class="lab"><b>Upgrade to Pro</b><small>10,000 credits / mo · from $49</small></span><span class="arr">›</span></button>
+              <div class="meta">
+                <div class="row"><span class="l">Free plan usage</span><span class="r">2 / 100</span></div>
+                <div class="bar light"><span></span></div>
+                <div class="resets">Resets on 31 May 2026</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="pair">
+        <div class="pair-label">Card · Dark</div>
+        <div class="sidebar-slice dark dark-scope">
+          <div class="nav-stub">
+            <div class="row-stub"><span class="dot"></span>Home</div>
+            <div class="row-stub on"><span class="dot"></span>Agents</div>
+            <div class="row-stub"><span class="dot"></span>Inbox</div>
+          </div>
+          <div class="card-wrap">
+            <div class="v07">
+              <button class="upgrade-hero"><span class="orb"></span><span class="lab"><b>Upgrade to Pro</b><small>10,000 credits / mo · from $49</small></span><span class="arr">›</span></button>
+              <div class="meta">
+                <div class="row"><span class="l">Free plan usage</span><span class="r">2 / 100</span></div>
+                <div class="bar dark"><span></span></div>
+                <div class="resets">Resets on 31 May 2026</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="pair">
+        <div class="pair-label">Modal · Light</div>
+        <div class="backdrop light light-scope">
+          <div class="modal">
+            <div class="m-shell light">
+              <div class="m-head"><h3>Upgrade to Pro</h3><span class="x">×</span></div>
+              <div class="m-sub">10,000 credits / month, unlimited agents, and custom branding.</div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px;">
+                <button class="m-plan" style="text-align:left;cursor:pointer;"><div class="pn">Monthly</div><div class="pp">$49<small>/mo</small></div><div class="pc">Renews monthly</div></button>
+                <button class="m-plan rec" style="text-align:left;cursor:pointer;"><span class="badge">Save $98</span><div class="pn">Yearly</div><div class="pp">$490<small>/yr</small></div><div class="pc">2 months free</div></button>
+              </div>
+              <ul class="m-feats">
+                <li>10,000 credits / month</li>
+                <li>Unlimited agents and knowledge sources</li>
+                <li>Custom branding</li>
+                <li>Priority support</li>
+              </ul>
+              <div class="m-foot"><button class="m-cta">Continue to checkout →</button><a class="m-link">Compare plans</a></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="pair">
+        <div class="pair-label">Modal · Dark</div>
+        <div class="backdrop dark dark-scope">
+          <div class="modal">
+            <div class="m-shell dark">
+              <div class="m-head"><h3>Upgrade to Pro</h3><span class="x">×</span></div>
+              <div class="m-sub">10,000 credits / month, unlimited agents, and custom branding.</div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px;">
+                <button class="m-plan" style="text-align:left;cursor:pointer;"><div class="pn">Monthly</div><div class="pp">$49<small>/mo</small></div><div class="pc">Renews monthly</div></button>
+                <button class="m-plan rec" style="text-align:left;cursor:pointer;"><span class="badge">Save $98</span><div class="pn">Yearly</div><div class="pp">$490<small>/yr</small></div><div class="pc">2 months free</div></button>
+              </div>
+              <ul class="m-feats">
+                <li>10,000 credits / month</li>
+                <li>Unlimited agents and knowledge sources</li>
+                <li>Custom branding</li>
+                <li>Priority support</li>
+              </ul>
+              <div class="m-foot"><button class="m-cta">Continue to checkout →</button><a class="m-link">Compare plans</a></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ 08 -->
+  <section class="mock" id="m8">
+    <div class="mock-tag"><span class="num">08</span><span class="ttl">Linear data row — bar takes the lead, numbers compress</span></div>
+    <div class="stage">
+      <div class="pair">
+        <div class="pair-label">Card · Light</div>
+        <div class="sidebar-slice light light-scope">
+          <div class="nav-stub">
+            <div class="row-stub"><span class="dot"></span>Home</div>
+            <div class="row-stub on"><span class="dot"></span>Agents</div>
+            <div class="row-stub"><span class="dot"></span>Inbox</div>
+          </div>
+          <div class="card-wrap">
+            <div class="v08 light">
+              <div class="row"><span class="l">2 / 100 credits</span><span class="r">2%</span></div>
+              <div class="bar-big"><span></span></div>
+              <div class="meta"><span>Resets 31 May 2026</span><span class="pl">Free plan</span></div>
+              <button class="upgrade-btn"><span class="orb"></span>Upgrade</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="pair">
+        <div class="pair-label">Card · Dark</div>
+        <div class="sidebar-slice dark dark-scope">
+          <div class="nav-stub">
+            <div class="row-stub"><span class="dot"></span>Home</div>
+            <div class="row-stub on"><span class="dot"></span>Agents</div>
+            <div class="row-stub"><span class="dot"></span>Inbox</div>
+          </div>
+          <div class="card-wrap">
+            <div class="v08 dark">
+              <div class="row"><span class="l">2 / 100 credits</span><span class="r">2%</span></div>
+              <div class="bar-big"><span></span></div>
+              <div class="meta"><span>Resets 31 May 2026</span><span class="pl">Free plan</span></div>
+              <button class="upgrade-btn"><span class="orb"></span>Upgrade</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="pair">
+        <div class="pair-label">Modal · Light</div>
+        <div class="backdrop light light-scope">
+          <div class="modal">
+            <div class="m-shell light">
+              <div class="m-head"><h3>Plan upgrade</h3><span class="x">×</span></div>
+              <div class="m-sub">You've used 2 of 100 free credits. Pick a plan to keep going past the cap.</div>
+              <div style="display:grid;grid-template-columns:1fr;gap:8px;margin-bottom:18px;">
+                <button class="m-plan" style="display:grid;grid-template-columns:1fr auto auto;align-items:center;gap:16px;cursor:pointer;text-align:left;">
+                  <div><div class="pn">Starter</div><div class="pc">2,000 credits / mo · 3 agents</div></div>
+                  <div class="pp">$19<small>/mo</small></div>
+                  <span style="opacity:.5;">›</span>
+                </button>
+                <button class="m-plan rec" style="display:grid;grid-template-columns:1fr auto auto;align-items:center;gap:16px;cursor:pointer;text-align:left;">
+                  <div><span class="badge" style="position:static;display:inline-block;margin-bottom:4px;">Recommended</span><div class="pn">Pro</div><div class="pc">10,000 credits / mo · unlimited agents</div></div>
+                  <div class="pp">$49<small>/mo</small></div>
+                  <span style="opacity:.7;">›</span>
+                </button>
+                <button class="m-plan" style="display:grid;grid-template-columns:1fr auto auto;align-items:center;gap:16px;cursor:pointer;text-align:left;">
+                  <div><div class="pn">Business</div><div class="pc">50,000 credits / mo · team seats</div></div>
+                  <div class="pp">$199<small>/mo</small></div>
+                  <span style="opacity:.5;">›</span>
+                </button>
+              </div>
+              <div class="m-foot"><button class="m-cta">Continue with Pro</button><a class="m-link">Cancel</a></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="pair">
+        <div class="pair-label">Modal · Dark</div>
+        <div class="backdrop dark dark-scope">
+          <div class="modal">
+            <div class="m-shell dark">
+              <div class="m-head"><h3>Plan upgrade</h3><span class="x">×</span></div>
+              <div class="m-sub">You've used 2 of 100 free credits. Pick a plan to keep going past the cap.</div>
+              <div style="display:grid;grid-template-columns:1fr;gap:8px;margin-bottom:18px;">
+                <button class="m-plan" style="display:grid;grid-template-columns:1fr auto auto;align-items:center;gap:16px;cursor:pointer;text-align:left;">
+                  <div><div class="pn">Starter</div><div class="pc">2,000 credits / mo · 3 agents</div></div>
+                  <div class="pp">$19<small>/mo</small></div>
+                  <span style="opacity:.5;">›</span>
+                </button>
+                <button class="m-plan rec" style="display:grid;grid-template-columns:1fr auto auto;align-items:center;gap:16px;cursor:pointer;text-align:left;">
+                  <div><span class="badge" style="position:static;display:inline-block;margin-bottom:4px;">Recommended</span><div class="pn">Pro</div><div class="pc">10,000 credits / mo · unlimited agents</div></div>
+                  <div class="pp">$49<small>/mo</small></div>
+                  <span style="opacity:.7;">›</span>
+                </button>
+                <button class="m-plan" style="display:grid;grid-template-columns:1fr auto auto;align-items:center;gap:16px;cursor:pointer;text-align:left;">
+                  <div><div class="pn">Business</div><div class="pc">50,000 credits / mo · team seats</div></div>
+                  <div class="pp">$199<small>/mo</small></div>
+                  <span style="opacity:.5;">›</span>
+                </button>
+              </div>
+              <div class="m-foot"><button class="m-cta">Continue with Pro</button><a class="m-link">Cancel</a></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ 09 -->
+  <section class="mock" id="m9">
+    <div class="mock-tag"><span class="num">09</span><span class="ttl">Bento mini — number / plan as separate tiles</span></div>
+    <div class="stage">
+      <div class="pair">
+        <div class="pair-label">Card · Light</div>
+        <div class="sidebar-slice light light-scope">
+          <div class="nav-stub">
+            <div class="row-stub"><span class="dot"></span>Home</div>
+            <div class="row-stub on"><span class="dot"></span>Agents</div>
+            <div class="row-stub"><span class="dot"></span>Inbox</div>
+          </div>
+          <div class="card-wrap">
+            <div class="v09 light">
+              <div class="grid2">
+                <div class="tile"><div class="l">Used</div><div class="v">2</div><div class="s">of 100 credits</div></div>
+                <div class="tile cycle"><div class="l">Plan</div><div class="v">Free</div><div class="s">Resets 31 May</div></div>
+              </div>
+              <button class="upgrade-btn"><span class="orb"></span>Upgrade</button>
+              <div class="resets-inline">2% used · 98 credits left this cycle</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="pair">
+        <div class="pair-label">Card · Dark</div>
+        <div class="sidebar-slice dark dark-scope">
+          <div class="nav-stub">
+            <div class="row-stub"><span class="dot"></span>Home</div>
+            <div class="row-stub on"><span class="dot"></span>Agents</div>
+            <div class="row-stub"><span class="dot"></span>Inbox</div>
+          </div>
+          <div class="card-wrap">
+            <div class="v09 dark">
+              <div class="grid2">
+                <div class="tile"><div class="l">Used</div><div class="v">2</div><div class="s">of 100 credits</div></div>
+                <div class="tile cycle"><div class="l">Plan</div><div class="v">Free</div><div class="s">Resets 31 May</div></div>
+              </div>
+              <button class="upgrade-btn"><span class="orb"></span>Upgrade</button>
+              <div class="resets-inline">2% used · 98 credits left this cycle</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="pair">
+        <div class="pair-label">Modal · Light</div>
+        <div class="backdrop light light-scope">
+          <div class="modal">
+            <div class="m-shell light">
+              <div class="m-head"><h3>Plans</h3><span class="x">×</span></div>
+              <div class="m-sub">Bento layout — each plan is a tile.</div>
+              <div style="display:grid;grid-template-columns:1fr 1.4fr 1fr;gap:10px;margin-bottom:18px;">
+                <div class="m-plan"><div class="pn">Starter</div><div class="pp">$19<small>/mo</small></div><div class="pc">2,000 credits</div></div>
+                <div class="m-plan rec" style="padding:18px 16px;">
+                  <span class="badge">Recommended</span>
+                  <div class="pn">Pro</div>
+                  <div class="pp" style="font-size:26px;">$49<small>/mo</small></div>
+                  <div class="pc">10,000 credits / mo</div>
+                  <div style="margin-top:12px;font-size:11px;opacity:.7;">+ unlimited agents · custom branding · priority support</div>
+                </div>
+                <div class="m-plan"><div class="pn">Business</div><div class="pp">$199<small>/mo</small></div><div class="pc">50,000 credits</div></div>
+              </div>
+              <div class="m-foot"><button class="m-cta">Upgrade to Pro</button><a class="m-link">Compare features</a></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="pair">
+        <div class="pair-label">Modal · Dark</div>
+        <div class="backdrop dark dark-scope">
+          <div class="modal">
+            <div class="m-shell dark">
+              <div class="m-head"><h3>Plans</h3><span class="x">×</span></div>
+              <div class="m-sub">Bento layout — each plan is a tile.</div>
+              <div style="display:grid;grid-template-columns:1fr 1.4fr 1fr;gap:10px;margin-bottom:18px;">
+                <div class="m-plan"><div class="pn">Starter</div><div class="pp">$19<small>/mo</small></div><div class="pc">2,000 credits</div></div>
+                <div class="m-plan rec" style="padding:18px 16px;">
+                  <span class="badge">Recommended</span>
+                  <div class="pn">Pro</div>
+                  <div class="pp" style="font-size:26px;">$49<small>/mo</small></div>
+                  <div class="pc">10,000 credits / mo</div>
+                  <div style="margin-top:12px;font-size:11px;opacity:.7;">+ unlimited agents · custom branding · priority support</div>
+                </div>
+                <div class="m-plan"><div class="pn">Business</div><div class="pp">$199<small>/mo</small></div><div class="pc">50,000 credits</div></div>
+              </div>
+              <div class="m-foot"><button class="m-cta">Upgrade to Pro</button><a class="m-link">Compare features</a></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ 10 -->
+  <section class="mock" id="m10">
+    <div class="mock-tag"><span class="num">10</span><span class="ttl">Glass / frosted — translucent surface, premium feel</span></div>
+    <div class="stage">
+      <div class="pair">
+        <div class="pair-label">Card · Light</div>
+        <div class="sidebar-slice light light-scope" style="background:linear-gradient(180deg,#f8f6ff 0%,#efeaff 100%);">
+          <div class="nav-stub">
+            <div class="row-stub"><span class="dot"></span>Home</div>
+            <div class="row-stub on"><span class="dot"></span>Agents</div>
+            <div class="row-stub"><span class="dot"></span>Inbox</div>
+          </div>
+          <div class="card-wrap" style="border-top-color: rgba(0,0,0,0.06);">
+            <div class="v10 light">
+              <div class="hd"><span class="l">Usage</span><span class="pl">Free plan</span></div>
+              <div class="met"><span class="v">2</span><span class="t">/ 100 credits</span></div>
+              <div class="bar light"><span></span></div>
+              <div class="resets">Resets on 31 May 2026</div>
+              <button class="upgrade-glass"><span class="orb"></span>Upgrade</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="pair">
+        <div class="pair-label">Card · Dark</div>
+        <div class="sidebar-slice dark dark-scope" style="background:radial-gradient(120% 60% at 0% 100%, rgba(139,92,246,0.20), transparent 60%), #0a0b0d;">
+          <div class="nav-stub">
+            <div class="row-stub"><span class="dot"></span>Home</div>
+            <div class="row-stub on"><span class="dot"></span>Agents</div>
+            <div class="row-stub"><span class="dot"></span>Inbox</div>
+          </div>
+          <div class="card-wrap" style="border-top-color: rgba(255,255,255,0.06);">
+            <div class="v10 dark">
+              <div class="hd"><span class="l">Usage</span><span class="pl">Free plan</span></div>
+              <div class="met"><span class="v">2</span><span class="t">/ 100 credits</span></div>
+              <div class="bar dark"><span></span></div>
+              <div class="resets">Resets on 31 May 2026</div>
+              <button class="upgrade-glass"><span class="orb"></span>Upgrade</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="pair">
+        <div class="pair-label">Modal · Light</div>
+        <div class="backdrop light light-scope" style="background:radial-gradient(900px 480px at 50% -10%, rgba(139,92,246,0.18), transparent 60%), linear-gradient(180deg,#f8f6ff,#efeaff);">
+          <div class="modal">
+            <div class="m-shell light" style="background:linear-gradient(180deg, rgba(255,255,255,0.85), rgba(255,255,255,0.55));backdrop-filter:blur(20px) saturate(180%);border:1px solid rgba(0,0,0,0.06);">
+              <div class="m-head"><h3>Upgrade your plan</h3><span class="x">×</span></div>
+              <div class="m-sub">Frosted surfaces, soft shadows. Same plan ladder.</div>
+              <div class="m-plans">
+                <div class="m-plan" style="background:rgba(255,255,255,0.65);"><div class="pn">Starter</div><div class="pp">$19<small>/mo</small></div><div class="pc">2,000 credits</div></div>
+                <div class="m-plan rec" style="background:rgba(139,92,246,0.10);"><span class="badge">Most picked</span><div class="pn">Pro</div><div class="pp">$49<small>/mo</small></div><div class="pc">10,000 credits</div></div>
+                <div class="m-plan" style="background:rgba(255,255,255,0.65);"><div class="pn">Business</div><div class="pp">$199<small>/mo</small></div><div class="pc">50,000 credits</div></div>
+              </div>
+              <ul class="m-feats">
+                <li>Unlimited agents</li>
+                <li>Custom branding</li>
+                <li>Priority support</li>
+              </ul>
+              <div class="m-foot"><button class="m-cta">Upgrade to Pro</button><a class="m-link">View all plans</a></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="pair">
+        <div class="pair-label">Modal · Dark</div>
+        <div class="backdrop dark dark-scope" style="background:radial-gradient(900px 480px at 50% -10%, rgba(139,92,246,0.22), transparent 60%), #06070a;">
+          <div class="modal">
+            <div class="m-shell dark" style="background:linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));backdrop-filter:blur(20px) saturate(180%);border:1px solid rgba(255,255,255,0.08);box-shadow: inset 0 1px 0 rgba(255,255,255,0.06), 0 30px 80px -20px rgba(0,0,0,0.50);">
+              <div class="m-head"><h3>Upgrade your plan</h3><span class="x">×</span></div>
+              <div class="m-sub">Frosted surfaces, soft shadows. Same plan ladder.</div>
+              <div class="m-plans">
+                <div class="m-plan" style="background:rgba(255,255,255,0.03);"><div class="pn">Starter</div><div class="pp">$19<small>/mo</small></div><div class="pc">2,000 credits</div></div>
+                <div class="m-plan rec" style="background:rgba(139,92,246,0.14);"><span class="badge">Most picked</span><div class="pn">Pro</div><div class="pp">$49<small>/mo</small></div><div class="pc">10,000 credits</div></div>
+                <div class="m-plan" style="background:rgba(255,255,255,0.03);"><div class="pn">Business</div><div class="pp">$199<small>/mo</small></div><div class="pc">50,000 credits</div></div>
+              </div>
+              <ul class="m-feats">
+                <li>Unlimited agents</li>
+                <li>Custom branding</li>
+                <li>Priority support</li>
+              </ul>
+              <div class="m-foot"><button class="m-cta">Upgrade to Pro</button><a class="m-link">View all plans</a></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  Dante AI · sidebar credits + upgrade modal · 10 directions · 2026-05-01 · <code>#01</code>–<code>#10</code>
+</footer>
+
+</body>
+</html>
