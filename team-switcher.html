@@ -1,0 +1,734 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dante AI · workspace switcher · 3 directions</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #08090b;
+    --page: #0c0d10;
+    --panel: #15171c;
+    --panel-2: #1c1f26;
+    --panel-3: #22262e;
+    --border: #1f232b;
+    --border-strong: #2a2f3a;
+    --text: #e8eaee;
+    --text-2: #c4c8d0;
+    --text-dim: #8a8f9a;
+    --text-mute: #5a5f6b;
+    --text-faint: #3d4250;
+    --purple: #8b5cf6;
+    --purple-2: #a78bfa;
+    --purple-bg: rgba(139, 92, 246, 0.12);
+    --purple-bg-strong: rgba(139, 92, 246, 0.22);
+    --purple-border: rgba(139, 92, 246, 0.30);
+    --green: #10b981;
+    --green-bg: rgba(16, 185, 129, 0.14);
+    --amber-bg: rgba(245, 158, 11, 0.14);
+    --amber: #f59e0b;
+    --blue: #3b82f6;
+    --radius: 12px;
+  }
+  html { scroll-behavior: smooth; scroll-padding-top: 64px; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Inter", "SF Pro Display", "Segoe UI", system-ui, sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; text-decoration: none; }
+  button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+
+  /* ===== single-line jump nav ===== */
+  .jump {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(8, 9, 11, 0.88);
+    backdrop-filter: saturate(180%) blur(14px);
+    border-bottom: 1px solid var(--border);
+  }
+  .jump-inner {
+    max-width: 1480px; margin: 0 auto;
+    display: flex; align-items: center; gap: 4px;
+    padding: 8px 24px;
+    white-space: nowrap; overflow-x: auto;
+  }
+  .jump-lead { font-size: 10px; color: var(--text-mute); text-transform: uppercase; letter-spacing: 0.12em; margin-right: 8px; }
+  .jump-inner a {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 26px; height: 26px;
+    border: 1px solid var(--border); border-radius: 6px;
+    font-size: 11px; font-variant-numeric: tabular-nums;
+    color: var(--text-dim);
+    transition: color 80ms, border-color 80ms, background 80ms;
+  }
+  .jump-inner a:hover { color: var(--text); border-color: var(--purple); background: var(--purple-bg); }
+
+  /* ===== per-mock framing ===== */
+  .gallery { padding: 24px 0 96px; }
+  .mock { max-width: 1440px; margin: 48px auto 0; padding: 0 24px; }
+  .mock:first-child { margin-top: 12px; }
+  .mock-tag {
+    display: flex; align-items: baseline; gap: 12px;
+    padding: 0 4px 12px;
+    font-size: 12px; color: var(--text-mute);
+  }
+  .mock-tag .num {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 22px; height: 22px;
+    border: 1px solid var(--border-strong); border-radius: 5px;
+    font-size: 11px; color: var(--text-2); font-variant-numeric: tabular-nums;
+  }
+  .mock-tag .ttl { font-size: 13px; color: var(--text-2); }
+  .mock-tag .sub { color: var(--text-mute); margin-left: 6px; }
+
+  .frame {
+    position: relative;
+    background: var(--page);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    height: 760px;
+    display: grid;
+    grid-template-columns: 224px 1fr;
+    grid-template-rows: 56px 1fr;
+  }
+
+  /* ===== top bar ===== */
+  .topbar {
+    grid-column: 1 / -1;
+    background: var(--panel);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 16px;
+    position: relative;
+    z-index: 10;
+  }
+  .tb-left { display: flex; align-items: center; gap: 10px; }
+  .tb-logo {
+    width: 28px; height: 24px;
+    background: linear-gradient(135deg, var(--purple) 0%, var(--purple-2) 100%);
+    border-radius: 6px;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 700; color: #fff;
+    letter-spacing: 0.04em;
+  }
+  .tb-ws-chip {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 5px 10px;
+    border-radius: 8px;
+    font-size: 13px;
+    color: var(--text);
+    cursor: pointer;
+    transition: background 80ms;
+  }
+  .tb-ws-chip:hover { background: var(--panel-2); }
+  .tb-ws-chip .ws-name { font-weight: 500; }
+  .tb-ws-chip .ws-plan { font-size: 11px; color: var(--text-mute); text-transform: capitalize; font-weight: 500; }
+  .tb-ws-chip .chev { color: var(--text-mute); font-size: 10px; margin-left: 2px; }
+  .tb-ws-static { /* identical visual but no chevron, no hover */
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 5px 10px;
+    font-size: 13px;
+  }
+  .tb-ws-static .ws-name { font-weight: 500; }
+  .tb-ws-static .ws-plan { font-size: 11px; color: var(--text-mute); text-transform: capitalize; }
+
+  .tb-right { display: flex; align-items: center; gap: 6px; }
+  .tb-search {
+    width: 224px;
+    height: 30px;
+    padding: 0 10px;
+    margin-right: 8px;
+    border: 1px solid var(--border); border-radius: 8px;
+    display: flex; align-items: center; gap: 8px;
+    color: var(--text-faint);
+    font-size: 12px;
+  }
+  .tb-search .kbd {
+    margin-left: auto;
+    border: 1px solid var(--border); background: var(--bg);
+    padding: 1px 5px; border-radius: 4px;
+    font-size: 9px; color: var(--text-mute);
+    font-family: ui-monospace, monospace;
+  }
+  .icon-btn {
+    width: 30px; height: 30px;
+    display: inline-flex; align-items: center; justify-content: center;
+    border-radius: 8px; color: var(--text-dim);
+    transition: background 80ms, color 80ms;
+  }
+  .icon-btn:hover { background: var(--panel-2); color: var(--text); }
+  .avatar {
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #ec4899 0%, #8b5cf6 100%);
+    color: #fff;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 10px; font-weight: 600;
+    border: 1px solid rgba(255,255,255,0.06);
+    margin-left: 6px;
+    cursor: pointer;
+  }
+
+  /* ===== sidebar ===== */
+  .sb {
+    background: var(--panel);
+    border-right: 1px solid var(--border);
+    padding: 8px;
+    display: flex; flex-direction: column; gap: 1px;
+  }
+  .sb-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 7px 10px;
+    border-radius: 7px;
+    font-size: 13px; color: var(--text-2);
+    cursor: pointer;
+  }
+  .sb-item .dot {
+    width: 14px; height: 14px;
+    background: var(--text-mute);
+    -webkit-mask-position: center;
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-size: contain;
+    mask-position: center;
+    mask-repeat: no-repeat;
+    mask-size: contain;
+    flex-shrink: 0;
+  }
+  .sb-item.active { background: var(--panel-2); color: var(--text); }
+  .sb-item.active .dot { background: var(--purple-2); }
+
+  /* ===== content placeholder (so the page reads like a real screen) ===== */
+  .content {
+    background: var(--page);
+    padding: 24px 28px;
+    overflow: hidden;
+  }
+  .content-h1 { font-size: 20px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+  .content-sub { font-size: 13px; color: var(--text-mute); margin-bottom: 20px; }
+  .card-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    height: 110px;
+  }
+  .card-lab { font-size: 11px; color: var(--text-mute); text-transform: uppercase; letter-spacing: 0.06em; }
+  .card-num { font-size: 22px; font-weight: 600; margin-top: 6px; }
+  .card-bar {
+    margin-top: 12px; height: 3px; border-radius: 2px;
+    background: linear-gradient(90deg, var(--purple) 0%, var(--purple-2) 60%, var(--panel-3) 60%);
+  }
+  .panel-block {
+    margin-top: 18px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    height: 280px;
+  }
+
+  /* ===== dropdown menus ===== */
+  .menu {
+    position: absolute;
+    background: var(--panel-2);
+    border: 1px solid var(--border-strong);
+    border-radius: 10px;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.5), 0 2px 8px rgba(0,0,0,0.3);
+    padding: 6px;
+    min-width: 280px;
+    z-index: 20;
+  }
+  .menu-head {
+    font-size: 10px; color: var(--text-mute);
+    text-transform: uppercase; letter-spacing: 0.10em;
+    padding: 8px 10px 4px;
+  }
+  .menu-row {
+    display: flex; align-items: center; gap: 10px;
+    padding: 8px 10px;
+    border-radius: 6px;
+    font-size: 13px;
+    cursor: pointer;
+  }
+  .menu-row:hover { background: var(--panel-3); }
+  .menu-row.active { background: var(--panel-3); }
+  .menu-row .check { width: 12px; color: var(--purple-2); font-size: 13px; }
+  .menu-row .ws-av {
+    width: 24px; height: 24px;
+    border-radius: 6px;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 10px; font-weight: 600; color: #fff;
+  }
+  .menu-row .ws-av.a { background: linear-gradient(135deg, #8b5cf6, #a78bfa); }
+  .menu-row .ws-av.b { background: linear-gradient(135deg, #10b981, #34d399); }
+  .menu-row .ws-av.c { background: linear-gradient(135deg, #f59e0b, #fbbf24); }
+  .menu-row .ws-meta { flex: 1; min-width: 0; }
+  .menu-row .ws-meta .ws-n { font-size: 13px; color: var(--text); font-weight: 500; }
+  .menu-row .ws-meta .ws-x { font-size: 11px; color: var(--text-mute); margin-top: 1px; }
+  .role-badge {
+    font-size: 10px; padding: 2px 6px;
+    border-radius: 4px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+  .role-owner { background: var(--purple-bg-strong); color: var(--purple-2); border: 1px solid var(--purple-border); }
+  .role-admin { background: var(--green-bg); color: var(--green); border: 1px solid rgba(16, 185, 129, 0.3); }
+  .role-editor { background: var(--amber-bg); color: var(--amber); border: 1px solid rgba(245, 158, 11, 0.3); }
+  .plan-pill {
+    font-size: 10px; padding: 1px 5px;
+    border-radius: 3px;
+    color: var(--text-mute);
+    text-transform: capitalize;
+  }
+  .menu-sep {
+    height: 1px; background: var(--border);
+    margin: 4px -6px;
+  }
+  .menu-cta {
+    display: flex; align-items: center; gap: 8px;
+    padding: 8px 10px;
+    border-radius: 6px;
+    font-size: 13px; color: var(--purple-2);
+    cursor: pointer;
+  }
+  .menu-cta:hover { background: var(--purple-bg); }
+  .menu-cta .plus {
+    width: 16px; height: 16px;
+    border-radius: 4px;
+    background: var(--purple-bg-strong);
+    display: inline-flex; align-items: center; justify-content: center;
+    color: var(--purple-2); font-size: 13px; font-weight: 600;
+  }
+
+  /* ===== mock #1 dropdown anchored top-left ===== */
+  .menu-tl {
+    top: 50px;
+    left: 16px;
+  }
+
+  /* ===== mock #2 avatar dropdown anchored top-right ===== */
+  .menu-tr {
+    top: 50px;
+    right: 16px;
+  }
+  .menu-row.simple {
+    color: var(--text-2);
+    gap: 10px;
+  }
+  .menu-row.simple .ic {
+    width: 14px; height: 14px;
+    background: var(--text-dim);
+    flex-shrink: 0;
+    -webkit-mask-position: center;
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-size: contain;
+  }
+
+  /* ===== mock #3 modal overlay ===== */
+  .modal-overlay {
+    position: absolute; inset: 0;
+    background: rgba(0,0,0,0.55);
+    backdrop-filter: blur(2px);
+    z-index: 15;
+    display: flex; align-items: flex-start; justify-content: center;
+    padding-top: 120px;
+  }
+  .modal-card {
+    width: 520px;
+    background: var(--panel-2);
+    border: 1px solid var(--border-strong);
+    border-radius: 12px;
+    box-shadow: 0 24px 80px rgba(0,0,0,0.6), 0 4px 16px rgba(0,0,0,0.4);
+    padding: 8px;
+  }
+  .modal-search {
+    display: flex; align-items: center; gap: 10px;
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--border);
+    margin: -8px -8px 6px;
+    font-size: 14px;
+  }
+  .modal-search .ic-search {
+    width: 14px; height: 14px;
+    background: var(--text-mute);
+  }
+  .modal-search input {
+    background: transparent; border: 0; outline: 0;
+    color: var(--text); width: 100%;
+    font: inherit;
+  }
+  .modal-search input::placeholder { color: var(--text-mute); }
+  .modal-list { padding: 4px 0; }
+  .modal-foot {
+    border-top: 1px solid var(--border);
+    margin: 4px -8px -8px;
+    padding: 4px 0;
+  }
+  .modal-card .menu-row { padding: 10px 12px; }
+  .modal-card .menu-cta { padding: 10px 12px; }
+
+  /* ===== icon mask data: simple geometric placeholders ===== */
+  .i-home   { -webkit-mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9 12 2l9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>'); mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9 12 2l9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>'); }
+  .i-flask  { -webkit-mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2v6L4 18a2 2 0 0 0 2 3h12a2 2 0 0 0 2-3l-5-10V2"/><line x1="9" y1="2" x2="15" y2="2"/></svg>'); mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2v6L4 18a2 2 0 0 0 2 3h12a2 2 0 0 0 2-3l-5-10V2"/><line x1="9" y1="2" x2="15" y2="2"/></svg>'); }
+  .i-cols   { -webkit-mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18M15 3v18"/></svg>'); mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18M15 3v18"/></svg>'); }
+  .i-book   { -webkit-mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2zM22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>'); mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2zM22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>'); }
+  .i-send   { -webkit-mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>'); mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>'); }
+  .i-inbox  { -webkit-mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5 5h14l3 7v6a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-6z"/></svg>'); mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5 5h14l3 7v6a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-6z"/></svg>'); }
+  .i-msg    { -webkit-mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>'); mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>'); }
+  .i-plug   { -webkit-mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2"><path d="M9 2v6M15 2v6M5 12h14a2 2 0 0 1 2 2v0a4 4 0 0 1-4 4h-1v4h-3v-4h-2v4h-3v-4H7a4 4 0 0 1-4-4v0a2 2 0 0 1 2-2"/></svg>'); mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2"><path d="M9 2v6M15 2v6M5 12h14a2 2 0 0 1 2 2v0a4 4 0 0 1-4 4h-1v4h-3v-4h-2v4h-3v-4H7a4 4 0 0 1-4-4v0a2 2 0 0 1 2-2"/></svg>'); }
+  .i-cog    { -webkit-mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.13-1.37l2.11-1.65a.5.5 0 0 0 .12-.64l-2-3.46a.5.5 0 0 0-.61-.22l-2.49 1a7 7 0 0 0-2.37-1.37l-.38-2.65A.5.5 0 0 0 12.75 1h-1.5a.5.5 0 0 0-.5.42l-.38 2.65a7 7 0 0 0-2.37 1.37l-2.49-1a.5.5 0 0 0-.61.22l-2 3.46a.5.5 0 0 0 .12.64L4.13 10.63A7 7 0 0 0 4 12c0 .47.05.93.13 1.37l-2.11 1.65a.5.5 0 0 0-.12.64l2 3.46a.5.5 0 0 0 .61.22l2.49-1a7 7 0 0 0 2.37 1.37l.38 2.65a.5.5 0 0 0 .5.42h1.5a.5.5 0 0 0 .5-.42l.38-2.65a7 7 0 0 0 2.37-1.37l2.49 1a.5.5 0 0 0 .61-.22l2-3.46a.5.5 0 0 0-.12-.64L18.87 13.37c.08-.44.13-.9.13-1.37z"/></svg>'); mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2"><circle cx="12" cy="12" r="3"/></svg>'); }
+  .i-card   { -webkit-mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2"><rect x="2" y="6" width="20" height="14" rx="2"/><line x1="2" y1="11" x2="22" y2="11"/></svg>'); mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2"><rect x="2" y="6" width="20" height="14" rx="2"/><line x1="2" y1="11" x2="22" y2="11"/></svg>'); }
+  .i-life   { -webkit-mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/></svg>'); mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/></svg>'); }
+  .i-out    { -webkit-mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>'); mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>'); }
+</style>
+</head>
+<body>
+
+<nav class="jump">
+  <div class="jump-inner">
+    <span class="jump-lead">Jump</span>
+    <a href="#m1" title="Top-left dropdown (replaces existing static label)">01</a>
+    <a href="#m2" title="Inside the user-avatar menu (top-right)">02</a>
+    <a href="#m3" title="Top-left chip + centred command-palette modal">03</a>
+  </div>
+</nav>
+
+<main class="gallery">
+
+  <!-- ============================================================ 01 -->
+  <section class="mock m1" id="m1">
+    <div class="mock-tag">
+      <span class="num">01</span>
+      <span class="ttl">Top-left dropdown</span>
+      <span class="sub">replaces the existing static label · zero new chrome</span>
+    </div>
+    <div class="frame">
+      <div class="topbar">
+        <div class="tb-left">
+          <span class="tb-logo">D</span>
+          <button class="tb-ws-chip" style="background: var(--panel-2);">
+            <span class="ws-name">Acme HQ</span>
+            <span class="ws-plan">pro</span>
+            <span class="chev">▾</span>
+          </button>
+        </div>
+        <div class="tb-right">
+          <div class="tb-search">
+            <span style="color: var(--text-faint);">Search...</span>
+            <span class="kbd">⌘K</span>
+          </div>
+          <button class="icon-btn"><span style="font-size: 14px;">☾</span></button>
+          <button class="icon-btn"><span style="font-size: 14px;">⏱</span></button>
+          <button class="icon-btn"><span style="font-size: 14px;">📖</span></button>
+          <span class="avatar">JM</span>
+        </div>
+
+        <!-- DROPDOWN OPEN -->
+        <div class="menu menu-tl">
+          <div class="menu-head">Workspaces</div>
+          <div class="menu-row active">
+            <span class="check">✓</span>
+            <span class="ws-av a">A</span>
+            <div class="ws-meta">
+              <div class="ws-n">Acme HQ</div>
+              <div class="ws-x">acme-hq.dante</div>
+            </div>
+            <span class="role-badge role-owner">Owner</span>
+            <span class="plan-pill">pro</span>
+          </div>
+          <div class="menu-row">
+            <span class="check"></span>
+            <span class="ws-av b">B</span>
+            <div class="ws-meta">
+              <div class="ws-n">Beta Labs</div>
+              <div class="ws-x">beta-labs.dante</div>
+            </div>
+            <span class="role-badge role-admin">Admin</span>
+            <span class="plan-pill">free</span>
+          </div>
+          <div class="menu-row">
+            <span class="check"></span>
+            <span class="ws-av c">G</span>
+            <div class="ws-meta">
+              <div class="ws-n">Gamma Studio</div>
+              <div class="ws-x">gamma-studio.dante</div>
+            </div>
+            <span class="role-badge role-editor">Editor</span>
+            <span class="plan-pill">advanced</span>
+          </div>
+          <div class="menu-sep"></div>
+          <div class="menu-cta">
+            <span class="plus">+</span>
+            <span>Create new workspace</span>
+          </div>
+        </div>
+      </div>
+
+      <aside class="sb">
+        <div class="sb-item active"><span class="dot i-home"></span>Dashboard</div>
+        <div class="sb-item"><span class="dot i-flask"></span>Sandbox</div>
+        <div class="sb-item"><span class="dot i-cols"></span>Side-by-side</div>
+        <div class="sb-item"><span class="dot i-book"></span>Knowledge</div>
+        <div class="sb-item"><span class="dot i-send"></span>Publish</div>
+        <div class="sb-item"><span class="dot i-inbox"></span>Inbox</div>
+        <div class="sb-item"><span class="dot i-msg"></span>Conversations</div>
+        <div class="sb-item"><span class="dot i-plug"></span>Integrations</div>
+      </aside>
+
+      <main class="content">
+        <div class="content-h1">Dashboard</div>
+        <div class="content-sub">Welcome back, James.</div>
+        <div class="card-grid">
+          <div class="card">
+            <div class="card-lab">Conversations · 30d</div>
+            <div class="card-num">1,284</div>
+            <div class="card-bar"></div>
+          </div>
+          <div class="card">
+            <div class="card-lab">Resolved · 30d</div>
+            <div class="card-num">912</div>
+            <div class="card-bar" style="background: linear-gradient(90deg, var(--green) 0%, #34d399 70%, var(--panel-3) 70%);"></div>
+          </div>
+          <div class="card">
+            <div class="card-lab">Credits</div>
+            <div class="card-num">29,967 <span style="font-size: 13px; color: var(--text-mute); font-weight: 400;">/ 30,000</span></div>
+            <div class="card-bar"></div>
+          </div>
+        </div>
+        <div class="panel-block"></div>
+      </main>
+    </div>
+  </section>
+
+  <!-- ============================================================ 02 -->
+  <section class="mock m2" id="m2">
+    <div class="mock-tag">
+      <span class="num">02</span>
+      <span class="ttl">Inside the user-avatar menu</span>
+      <span class="sub">top-left label stays static · switching lives behind the avatar</span>
+    </div>
+    <div class="frame">
+      <div class="topbar">
+        <div class="tb-left">
+          <span class="tb-logo">D</span>
+          <span class="tb-ws-static">
+            <span class="ws-name">Acme HQ</span>
+            <span class="ws-plan">pro</span>
+          </span>
+        </div>
+        <div class="tb-right">
+          <div class="tb-search">
+            <span style="color: var(--text-faint);">Search...</span>
+            <span class="kbd">⌘K</span>
+          </div>
+          <button class="icon-btn"><span style="font-size: 14px;">☾</span></button>
+          <button class="icon-btn"><span style="font-size: 14px;">⏱</span></button>
+          <button class="icon-btn"><span style="font-size: 14px;">📖</span></button>
+          <span class="avatar" style="box-shadow: 0 0 0 2px var(--purple-bg-strong);">JM</span>
+        </div>
+
+        <!-- AVATAR DROPDOWN OPEN -->
+        <div class="menu menu-tr" style="min-width: 260px;">
+          <div style="padding: 10px 10px 8px; display: flex; align-items: center; gap: 10px;">
+            <span class="avatar" style="margin: 0; width: 28px; height: 28px; font-size: 9px;">JM</span>
+            <div style="min-width: 0;">
+              <div style="font-size: 13px; font-weight: 500;">James Pavlov</div>
+              <div style="font-size: 11px; color: var(--text-mute);">james@dante-ai.com</div>
+            </div>
+          </div>
+          <div class="menu-sep"></div>
+          <div class="menu-head">Switch workspace</div>
+          <div class="menu-row active">
+            <span class="check">✓</span>
+            <span class="ws-av a">A</span>
+            <div class="ws-meta">
+              <div class="ws-n">Acme HQ</div>
+            </div>
+            <span class="role-badge role-owner">Owner</span>
+          </div>
+          <div class="menu-row">
+            <span class="check"></span>
+            <span class="ws-av b">B</span>
+            <div class="ws-meta">
+              <div class="ws-n">Beta Labs</div>
+            </div>
+            <span class="role-badge role-admin">Admin</span>
+          </div>
+          <div class="menu-row">
+            <span class="check"></span>
+            <span class="ws-av c">G</span>
+            <div class="ws-meta">
+              <div class="ws-n">Gamma Studio</div>
+            </div>
+            <span class="role-badge role-editor">Editor</span>
+          </div>
+          <div class="menu-cta" style="font-size: 12px;">
+            <span class="plus">+</span>
+            <span>Create new workspace</span>
+          </div>
+          <div class="menu-sep"></div>
+          <div class="menu-row simple"><span class="ic i-cog" style="-webkit-mask-image: var(--ic-cog); mask-image: var(--ic-cog);"></span>Profile &amp; Settings</div>
+          <div class="menu-row simple"><span class="ic i-card"></span>Usage &amp; Billing</div>
+          <div class="menu-sep"></div>
+          <div class="menu-row simple"><span class="ic i-life"></span>Contact us</div>
+          <div class="menu-row simple"><span class="ic i-out"></span>Sign out</div>
+        </div>
+      </div>
+
+      <aside class="sb">
+        <div class="sb-item active"><span class="dot i-home"></span>Dashboard</div>
+        <div class="sb-item"><span class="dot i-flask"></span>Sandbox</div>
+        <div class="sb-item"><span class="dot i-cols"></span>Side-by-side</div>
+        <div class="sb-item"><span class="dot i-book"></span>Knowledge</div>
+        <div class="sb-item"><span class="dot i-send"></span>Publish</div>
+        <div class="sb-item"><span class="dot i-inbox"></span>Inbox</div>
+        <div class="sb-item"><span class="dot i-msg"></span>Conversations</div>
+        <div class="sb-item"><span class="dot i-plug"></span>Integrations</div>
+      </aside>
+
+      <main class="content">
+        <div class="content-h1">Dashboard</div>
+        <div class="content-sub">Welcome back, James.</div>
+        <div class="card-grid">
+          <div class="card">
+            <div class="card-lab">Conversations · 30d</div>
+            <div class="card-num">1,284</div>
+            <div class="card-bar"></div>
+          </div>
+          <div class="card">
+            <div class="card-lab">Resolved · 30d</div>
+            <div class="card-num">912</div>
+            <div class="card-bar" style="background: linear-gradient(90deg, var(--green) 0%, #34d399 70%, var(--panel-3) 70%);"></div>
+          </div>
+          <div class="card">
+            <div class="card-lab">Credits</div>
+            <div class="card-num">29,967 <span style="font-size: 13px; color: var(--text-mute); font-weight: 400;">/ 30,000</span></div>
+            <div class="card-bar"></div>
+          </div>
+        </div>
+        <div class="panel-block"></div>
+      </main>
+    </div>
+  </section>
+
+  <!-- ============================================================ 03 -->
+  <section class="mock m3" id="m3">
+    <div class="mock-tag">
+      <span class="num">03</span>
+      <span class="ttl">Top-left chip + centred modal</span>
+      <span class="sub">command-palette feel · search bar · scales to many workspaces</span>
+    </div>
+    <div class="frame">
+      <div class="topbar">
+        <div class="tb-left">
+          <span class="tb-logo">D</span>
+          <button class="tb-ws-chip" style="background: var(--panel-3); border: 1px solid var(--purple-border);">
+            <span class="ws-name">Acme HQ</span>
+            <span class="ws-plan">pro</span>
+            <span class="chev">▾</span>
+          </button>
+        </div>
+        <div class="tb-right">
+          <div class="tb-search">
+            <span style="color: var(--text-faint);">Search...</span>
+            <span class="kbd">⌘K</span>
+          </div>
+          <button class="icon-btn"><span style="font-size: 14px;">☾</span></button>
+          <button class="icon-btn"><span style="font-size: 14px;">⏱</span></button>
+          <button class="icon-btn"><span style="font-size: 14px;">📖</span></button>
+          <span class="avatar">JM</span>
+        </div>
+      </div>
+
+      <aside class="sb">
+        <div class="sb-item active"><span class="dot i-home"></span>Dashboard</div>
+        <div class="sb-item"><span class="dot i-flask"></span>Sandbox</div>
+        <div class="sb-item"><span class="dot i-cols"></span>Side-by-side</div>
+        <div class="sb-item"><span class="dot i-book"></span>Knowledge</div>
+        <div class="sb-item"><span class="dot i-send"></span>Publish</div>
+        <div class="sb-item"><span class="dot i-inbox"></span>Inbox</div>
+        <div class="sb-item"><span class="dot i-msg"></span>Conversations</div>
+        <div class="sb-item"><span class="dot i-plug"></span>Integrations</div>
+      </aside>
+
+      <main class="content">
+        <div class="content-h1">Dashboard</div>
+        <div class="content-sub">Welcome back, James.</div>
+        <div class="card-grid">
+          <div class="card">
+            <div class="card-lab">Conversations · 30d</div>
+            <div class="card-num">1,284</div>
+            <div class="card-bar"></div>
+          </div>
+          <div class="card">
+            <div class="card-lab">Resolved · 30d</div>
+            <div class="card-num">912</div>
+            <div class="card-bar" style="background: linear-gradient(90deg, var(--green) 0%, #34d399 70%, var(--panel-3) 70%);"></div>
+          </div>
+          <div class="card">
+            <div class="card-lab">Credits</div>
+            <div class="card-num">29,967 <span style="font-size: 13px; color: var(--text-mute); font-weight: 400;">/ 30,000</span></div>
+            <div class="card-bar"></div>
+          </div>
+        </div>
+        <div class="panel-block"></div>
+      </main>
+
+      <!-- MODAL OVERLAY -->
+      <div class="modal-overlay">
+        <div class="modal-card">
+          <div class="modal-search">
+            <span style="color: var(--text-mute); font-size: 14px;">⌕</span>
+            <input placeholder="Search workspaces or invite someone…" />
+            <span class="kbd" style="margin: 0; font-size: 9px;">esc</span>
+          </div>
+          <div class="modal-list">
+            <div class="menu-row active">
+              <span class="ws-av a">A</span>
+              <div class="ws-meta">
+                <div class="ws-n">Acme HQ</div>
+                <div class="ws-x">acme-hq.dante · 4 members</div>
+              </div>
+              <span class="role-badge role-owner">Owner</span>
+              <span class="plan-pill">pro</span>
+              <span class="check" style="margin-left: 8px;">✓</span>
+            </div>
+            <div class="menu-row">
+              <span class="ws-av b">B</span>
+              <div class="ws-meta">
+                <div class="ws-n">Beta Labs</div>
+                <div class="ws-x">beta-labs.dante · 2 members</div>
+              </div>
+              <span class="role-badge role-admin">Admin</span>
+              <span class="plan-pill">free</span>
+            </div>
+            <div class="menu-row">
+              <span class="ws-av c">G</span>
+              <div class="ws-meta">
+                <div class="ws-n">Gamma Studio</div>
+                <div class="ws-x">gamma-studio.dante · 11 members</div>
+              </div>
+              <span class="role-badge role-editor">Editor</span>
+              <span class="plan-pill">advanced</span>
+            </div>
+          </div>
+          <div class="modal-foot">
+            <div class="menu-cta">
+              <span class="plus">+</span>
+              <span>Create new workspace</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+</body>
+</html>
